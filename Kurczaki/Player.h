@@ -30,7 +30,8 @@ private:
 	void move();
 	void shoot();
 
-	sf::RectangleShape playerShape;
+	sf::Texture texture;
+	sf::Sprite sprite;
 public:
 	Player(sf::RenderWindow& window);
 	void update();

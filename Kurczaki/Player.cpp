@@ -7,18 +7,21 @@ void Player::initVeriables()
 	this->hp = 10;
 	this->points = 0;
 	this->speed = 10.f;
-	this->size = 50.f;
+	this->size = 100.f;
 	this->shootSpeed = 1.f;
 	this->weaponLvl = 1;
 	this->speedLvl = 1;
 	this->shootLvl = 1;
+
+	this->texture.loadFromFile("./assets/ship.png");
+	this->texture.setSmooth(true);
 }
 
 void Player::initShape()
 {
-	this->playerShape.setPosition(this->position);
-	this->playerShape.setFillColor(sf::Color(1, 1, 255));
-	this->playerShape.setSize(sf::Vector2f(size, size));
+	this->sprite.setTexture(this->texture);
+	this->sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+
 }
 
 void Player::moveColider()
@@ -65,7 +68,7 @@ void Player::move()
 void Player::shoot()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->position.x + this->size / 2, this->position.y), m_window));
+		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->position.x + this->size / 2, this->position.y + this->size/3), m_window));
 	}
 }
 
@@ -93,12 +96,12 @@ void Player::update()
 
 void Player::render()
 {
-	//player render
-	playerShape.setPosition(this->position);
-	m_window.draw(this->playerShape);
-
 	//bullets render
 	for (int i = 0; i < this->bullets.size(); i++) {
 		bullets[i]->render();
 	}
+
+	//player render
+	this->sprite.setPosition(this->position);
+	m_window.draw(this->sprite);
 }
