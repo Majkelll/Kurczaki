@@ -22,6 +22,10 @@ Bullet::Bullet(sf::Vector2f pos, sf::RenderWindow& window)
 	this->initShape();
 }
 
+Bullet::~Bullet()
+{
+}
+
 void Bullet::update()
 {
 	this->bulletShape.setPosition(this->position);
@@ -33,9 +37,9 @@ void Bullet::render()
 	m_window.draw(this->bulletShape);
 }
 
-bool Bullet::kabum()
+bool Bullet::del_obj()
 {
-	if (this->position.y < 100) {
+	if (this->position.y < 0 - this->size) {
 		return true;
 	}
 	return false;

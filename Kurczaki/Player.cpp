@@ -65,7 +65,7 @@ void Player::move()
 void Player::shoot()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-		bullets.push_back(Bullet(sf::Vector2f(this->position.x + this->size / 2, this->position.y), m_window));
+		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->position.x + this->size / 2, this->position.y), m_window));
 	}
 }
 
@@ -84,8 +84,8 @@ void Player::update()
 
 	//bullets update
 	for (int i = 0; i < this->bullets.size();i++) {
-		bullets[i].update();
-		if (bullets[i].kabum()) {
+		bullets[i]->update();
+		if (bullets[i]->del_obj()) {
 			bullets.erase(bullets.begin() + i);
 		}
 	}
@@ -99,6 +99,6 @@ void Player::render()
 
 	//bullets render
 	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i].render();
+		bullets[i]->render();
 	}
 }

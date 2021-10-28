@@ -19,8 +19,9 @@ private:
 	void initShape();
 public:
 	Bullet(sf::Vector2f pos, sf::RenderWindow& window);
+	~Bullet();
 	void update();
 	void render();
-	bool kabum();
+	bool del_obj();
 	sf::RectangleShape getShape();
 };

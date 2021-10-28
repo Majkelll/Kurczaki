@@ -2,6 +2,7 @@
 #include "Bullet.h"
 
 #include <iostream>
+#include <list>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -20,7 +21,8 @@ private:
 	int speedLvl;
 	int shootLvl;
 	sf::RenderWindow& m_window;
-	std::vector<Bullet> bullets;
+
+	std::vector<std::unique_ptr<Bullet>> bullets;
 
 	void initVeriables();
 	void initShape();
