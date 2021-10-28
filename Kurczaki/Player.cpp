@@ -62,20 +62,43 @@ void Player::move()
 	this->moveColider();
 }
 
+void Player::shoot()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		bullets.push_back(Bullet(sf::Vector2f(this->position.x + this->size / 2, this->position.y), m_window));
+	}
+}
+
 Player::Player(sf::RenderWindow& window)
 	:m_window(window)
 {
-	initVeriables();
-	initShape();
+	this->initVeriables();
+	this->initShape();
 }
 
 void Player::update()
 {
+	//player update
 	this->move();
+	this->shoot();
+
+	//bullets update
+	for (int i = 0; i < this->bullets.size();i++) {
+		bullets[i].update();
+		if (bullets[i].kabum()) {
+			bullets.erase(bullets.begin() + i);
+		}
+	}
 }
 
 void Player::render()
 {
+	//player render
 	playerShape.setPosition(this->position);
 	m_window.draw(this->playerShape);
+
+	//bullets render
+	for (int i = 0; i < this->bullets.size(); i++) {
+		bullets[i].render();
+	}
 }

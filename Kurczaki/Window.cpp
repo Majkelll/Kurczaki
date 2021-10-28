@@ -3,6 +3,7 @@
 Window::Window(sf::RenderWindow& window)
 	:m_window(window)
 {
+	window.setFramerateLimit(60);
 }
 
 void Window::eventBasicHandler()

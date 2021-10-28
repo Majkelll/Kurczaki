@@ -1,4 +1,5 @@
 #pragma once
+#include "Bullet.h"
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -19,16 +20,16 @@ private:
 	int speedLvl;
 	int shootLvl;
 	sf::RenderWindow& m_window;
+	std::vector<Bullet> bullets;
 
 	void initVeriables();
 	void initShape();
 	void moveColider();
 	void move();
+	void shoot();
 
-	//TO DO
-
-public:
 	sf::RectangleShape playerShape;
+public:
 	Player(sf::RenderWindow& window);
 	void update();
 	void render();

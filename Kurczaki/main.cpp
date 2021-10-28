@@ -9,8 +9,7 @@
 #include <SFML/Audio.hpp>
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Test");
-	window.setFramerateLimit(60);
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kurczaki v.0");
 	Window windowHandler(window);
 	Game game(window);
 	while (window.isOpen())
