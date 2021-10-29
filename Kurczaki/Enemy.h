@@ -6,7 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 
-class Bullet
+class Enemy
 {
 private:
 	sf::RenderWindow& m_window;
@@ -15,21 +15,17 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 
-	int speed;
 	int damage;
+	int hp;
 	int size;
-	bool kabum;
 
 	void initVeriables();
 	void initShape();
 
 public:
-	Bullet(sf::Vector2f pos, sf::RenderWindow& window);
+	Enemy(sf::Vector2f pos, sf::RenderWindow& window);
 
-	bool destruct();
-
-	void set_kabum();
+	bool del_obj();
 	void update();
 	void render();
-
 };

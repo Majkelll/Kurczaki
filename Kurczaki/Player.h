@@ -12,6 +12,10 @@ class Player
 {
 private:
 	sf::Vector2f position;
+	sf::Texture texture;
+	sf::Sprite sprite;
+	sf::RenderWindow& m_window;
+
 	int hp;
 	int points;
 	float speed;
@@ -20,7 +24,6 @@ private:
 	int weaponLvl;
 	int speedLvl;
 	int shootLvl;
-	sf::RenderWindow& m_window;
 
 	std::vector<std::unique_ptr<Bullet>> bullets;
 
@@ -30,11 +33,9 @@ private:
 	void move();
 	void shoot();
 
-	sf::Texture texture;
-	sf::Sprite sprite;
 public:
 	Player(sf::RenderWindow& window);
+
 	void update();
 	void render();
-
 };

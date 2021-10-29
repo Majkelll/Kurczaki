@@ -5,13 +5,15 @@ void Bullet::initVeriables()
 	this->speed = 5;
 	this->damage = 1;
 	this->size = 5;
+	this->texture.loadFromFile("./assets/bullet.png");
+	this->texture.setSmooth(true);
+	this->kabum = false;
 }
 
 void Bullet::initShape()
 {
-	this->bulletShape.setPosition(this->position);
-	this->bulletShape.setFillColor(sf::Color(255, 1, 1));
-	this->bulletShape.setSize(sf::Vector2f(this->size, this->size));
+	this->sprite.setTexture(this->texture);
+	this->sprite.setTextureRect(sf::IntRect(0, 0, 5, 5));
 }
 
 Bullet::Bullet(sf::Vector2f pos, sf::RenderWindow& window)
@@ -22,30 +24,27 @@ Bullet::Bullet(sf::Vector2f pos, sf::RenderWindow& window)
 	this->initShape();
 }
 
-Bullet::~Bullet()
+void Bullet::set_kabum()
 {
+	this->kabum = true;
 }
 
 void Bullet::update()
 {
-	this->bulletShape.setPosition(this->position);
 	this->position.y -= this->speed;
 }
 
 void Bullet::render()
 {
-	m_window.draw(this->bulletShape);
+	this->sprite.setPosition(this->position);
+	m_window.draw(this->sprite);
 }
 
-bool Bullet::del_obj()
+bool Bullet::destruct()
 {
-	if (this->position.y < 0 - this->size) {
+	if (this->position.y < 0 - this->size ||
+		this->kabum) {
 		return true;
 	}
 	return false;
-}
-
-sf::RectangleShape Bullet::getShape()
-{
-	return this->bulletShape;
 }

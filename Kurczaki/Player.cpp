@@ -21,7 +21,6 @@ void Player::initShape()
 {
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
-
 }
 
 void Player::moveColider()
@@ -68,7 +67,7 @@ void Player::move()
 void Player::shoot()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->position.x + this->size / 2, this->position.y + this->size/3), m_window));
+		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->position.x + this->size / 2, this->position.y + this->size / 3), m_window));
 	}
 }
 
@@ -86,9 +85,9 @@ void Player::update()
 	this->shoot();
 
 	//bullets update
-	for (int i = 0; i < this->bullets.size();i++) {
+	for (int i = 0; i < this->bullets.size(); i++) {
 		bullets[i]->update();
-		if (bullets[i]->del_obj()) {
+		if (bullets[i]->destruct()) {
 			bullets.erase(bullets.begin() + i);
 		}
 	}
