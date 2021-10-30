@@ -64,11 +64,32 @@ void Player::move()
 	this->moveColider();
 }
 
-void Player::shoot()
+sf::Vector2f Player::get_position()
+{
+	return this->position;
+}
+
+float Player::get_size()
+{
+	return this->size;
+}
+
+int Player::get_points()
+{
+	return this->points;
+}
+
+void Player::set_points(int newPoints)
+{
+	this->points = newPoints;
+}
+
+bool Player::shoot()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->position.x + this->size / 2, this->position.y + this->size / 3), m_window));
+		return true;
 	}
+	return false;
 }
 
 Player::Player(sf::RenderWindow& window)
@@ -83,23 +104,10 @@ void Player::update()
 	//player update
 	this->move();
 	this->shoot();
-
-	//bullets update
-	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i]->update();
-		if (bullets[i]->destruct()) {
-			bullets.erase(bullets.begin() + i);
-		}
-	}
 }
 
 void Player::render()
 {
-	//bullets render
-	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i]->render();
-	}
-
 	//player render
 	this->sprite.setPosition(this->position);
 	m_window.draw(this->sprite);

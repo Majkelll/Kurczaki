@@ -25,9 +25,11 @@ private:
 
 public:
 	Bullet(sf::Vector2f pos, sf::RenderWindow& window);
+	sf::Vector2f get_position();
+	int get_size();
+	int get_damage();
 
 	bool destruct();
-
 	void set_kabum();
 	void update();
 	void render();

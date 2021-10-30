@@ -25,17 +25,19 @@ private:
 	int speedLvl;
 	int shootLvl;
 
-	std::vector<std::unique_ptr<Bullet>> bullets;
-
 	void initVeriables();
 	void initShape();
 	void moveColider();
 	void move();
-	void shoot();
 
 public:
 	Player(sf::RenderWindow& window);
 
+	sf::Vector2f get_position();
+	float get_size();
+	int get_points();
+	void set_points(int newPoints);
+	bool shoot();
 	void update();
 	void render();
 };

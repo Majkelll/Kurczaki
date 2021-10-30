@@ -18,12 +18,18 @@ private:
 	int damage;
 	int hp;
 	int size;
+	int coins;
 
 	void initVeriables();
 	void initShape();
 
 public:
 	Enemy(sf::Vector2f pos, sf::RenderWindow& window);
+	sf::Vector2f get_position();
+	int get_size();
+	int get_hp();
+	int get_coins();
+	void set_hp(int newHp);
 
 	bool del_obj();
 	void update();

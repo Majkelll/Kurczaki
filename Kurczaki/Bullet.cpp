@@ -24,6 +24,21 @@ Bullet::Bullet(sf::Vector2f pos, sf::RenderWindow& window)
 	this->initShape();
 }
 
+sf::Vector2f Bullet::get_position()
+{
+	return this->position;
+}
+
+int Bullet::get_size()
+{
+	return this->size;
+}
+
+int Bullet::get_damage()
+{
+	return this->damage;
+}
+
 void Bullet::set_kabum()
 {
 	this->kabum = true;
