@@ -2,8 +2,8 @@
 
 void Player::initVeriables()
 {
-	this->position.x = 500;
-	this->position.y = 500;
+	this->position.x = 1280 / 2 - 50;
+	this->position.y = 720 - 150;
 	this->hp = 3;
 	this->points = 0;
 	this->speed = 10.f;
@@ -108,6 +108,16 @@ void Player::set_points(int newPoints)
 	this->points = newPoints;
 }
 
+void Player::set_hp(int newHp)
+{
+	this->hp = newHp;
+}
+
+int Player::get_hp()
+{
+	return this->hp;
+}
+
 bool Player::shoot()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -129,12 +139,12 @@ void Player::update()
 	this->move();
 	this->shoot();
 	this->hpUpdate();
+	this->sprite.setPosition(this->position);
 }
 
 void Player::render()
 {
 	//player render
-	this->sprite.setPosition(this->position);
 	m_window.draw(this->sprite);
 	//hp render
 	this->hpRender();

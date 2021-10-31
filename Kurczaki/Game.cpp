@@ -31,6 +31,16 @@ void Game::updateLvl()
 	}
 }
 
+void Game::eggsUpdate()
+{
+	for (int i = 0; i < this->eggs.size(); i++) {
+		eggs[i]->update();
+		if (eggs[i]->destruct()) {
+			eggs.erase(eggs.begin() + i);
+		}
+	}
+}
+
 Game::Game(sf::RenderWindow& window)
 	:m_window(window), player(window)
 {
@@ -61,10 +71,14 @@ void Game::enemiesUpdate()
 {
 	for (int i = 0; i < this->enemies.size(); i++) {
 		enemies[i]->update();
-		if (this->enemies[i]->get_hp() <= 0) {
-			this->enemies.erase(this->enemies.begin() + i);
-			this->player.set_points(this->player.get_points() + this->enemies[i]->get_coins());
+		if (rand() % 3000 == 500) {
+			eggs.emplace_back(std::make_unique<Egg>(sf::Vector2f(this->enemies[i]->get_position().x + 25, this->enemies[i]->get_position().y + 90), m_window));
 		}
+		if (std::rand())
+			if (this->enemies[i]->get_hp() <= 0) {
+				this->enemies.erase(this->enemies.begin() + i);
+				this->player.set_points(this->player.get_points() + this->enemies[i]->get_coins());
+			}
 	}
 }
 void Game::bulletsEnemiesColider()
@@ -82,6 +96,18 @@ void Game::bulletsEnemiesColider()
 		}
 	}
 }
+void Game::eggsPlayerColider()
+{
+	for (int i = 0; i < this->eggs.size(); i++) {
+		if (this->hitbox(eggs[i]->get_position(),
+			this->player.get_position(),
+			this->eggs[i]->get_size(),
+			this->player.get_size())) {
+			this->player.set_hp(this->player.get_hp() - 1);
+			this->eggs.erase(this->eggs.begin() + i);
+		}
+	}
+}
 void Game::update()
 {
 	//player update
@@ -96,9 +122,13 @@ void Game::update()
 
 	this->bulletsUpdate();
 
+	this->eggsUpdate();
+
 	this->bulletsEnemiesColider();
 
 	this->updateLvl();
+
+	this->eggsPlayerColider();
 
 }
 
@@ -107,6 +137,10 @@ void Game::render()
 	m_window.clear();
 	m_window.draw(this->backgroundSprite);
 
+	//eggs render
+	for (int i = 0; i < this->eggs.size(); i++) {
+		eggs[i]->render();
+	}
 
 	//enemies render
 	for (int i = 0; i < this->enemies.size(); i++) {
@@ -118,10 +152,11 @@ void Game::render()
 		bullets[i]->render();
 	}
 
+
 	//player render
 	player.render();
-
 	m_window.draw(this->textScore);
+
 	m_window.display();
 }
 

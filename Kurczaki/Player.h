@@ -43,6 +43,8 @@ public:
 	float get_size();
 	int get_points();
 	void set_points(int newPoints);
+	void set_hp(int newHp);
+	int get_hp();
 	bool shoot();
 
 	void update();
