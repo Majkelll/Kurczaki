@@ -4,7 +4,7 @@ void Player::initVeriables()
 {
 	this->position.x = 500;
 	this->position.y = 500;
-	this->hp = 10;
+	this->hp = 3;
 	this->points = 0;
 	this->speed = 10.f;
 	this->size = 100.f;
@@ -15,6 +15,9 @@ void Player::initVeriables()
 
 	this->texture.loadFromFile("./assets/ship.png");
 	this->texture.setSmooth(true);
+
+	this->hpTexture.loadFromFile("./assets/heart.png");
+	this->hpTexture.setSmooth(true);
 }
 
 void Player::initShape()
@@ -64,6 +67,27 @@ void Player::move()
 	this->moveColider();
 }
 
+void Player::hpRender()
+{
+	for (int i = 0; i < this->hpSprites.size(); i++) {
+		m_window.draw(this->hpSprites[i]);
+	}
+}
+
+void Player::hpUpdate()
+{
+	if (this->hp != this->hpSprites.size()) {
+		hpSprites.clear();
+		for (int i = 0; i < this->hp; i++) {
+			sf::Sprite temp;
+			temp.setTexture(this->hpTexture);
+			temp.setTextureRect(sf::IntRect(0, 0, 40, 40));
+			temp.setPosition(sf::Vector2f(m_window.getSize().x - 60 - (i * 40), 20.f));
+			hpSprites.push_back(temp);
+		}
+	}
+}
+
 sf::Vector2f Player::get_position()
 {
 	return this->position;
@@ -104,6 +128,7 @@ void Player::update()
 	//player update
 	this->move();
 	this->shoot();
+	this->hpUpdate();
 }
 
 void Player::render()
@@ -111,4 +136,6 @@ void Player::render()
 	//player render
 	this->sprite.setPosition(this->position);
 	m_window.draw(this->sprite);
+	//hp render
+	this->hpRender();
 }

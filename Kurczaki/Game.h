@@ -23,18 +23,19 @@ private:
 	sf::Sprite backgroundSprite;
 	sf::Font font;
 
+	int currLvl;
+
 	void initVeriables();
-	void initTextScore();
-
-public:
-	Game(sf::RenderWindow& window);
-
 	void generateLvl(int level);
-
 	void bulletsUpdate();
 	void enemiesUpdate();
 	void bulletsEnemiesColider();
+	void initTextScore();
+	void updateLvl();
+	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2);
+
+public:
+	Game(sf::RenderWindow& window);
 	void update();
 	void render();
-	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2);
 };

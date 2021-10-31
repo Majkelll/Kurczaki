@@ -25,10 +25,16 @@ private:
 	int speedLvl;
 	int shootLvl;
 
+	sf::Texture hpTexture;
+
+	std::vector <sf::Sprite> hpSprites;
+
 	void initVeriables();
 	void initShape();
 	void moveColider();
 	void move();
+	void hpRender();
+	void hpUpdate();
 
 public:
 	Player(sf::RenderWindow& window);
@@ -38,6 +44,7 @@ public:
 	int get_points();
 	void set_points(int newPoints);
 	bool shoot();
+
 	void update();
 	void render();
 };

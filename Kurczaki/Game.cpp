@@ -8,6 +8,8 @@ void Game::initVeriables()
 	this->backgroundSprite.setTexture(this->backgroundTexture);
 	this->backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1280, 720));
 
+	this->currLvl = 1;
+
 	initTextScore();
 }
 
@@ -17,20 +19,29 @@ void Game::initTextScore()
 	this->textScore.setFont(this->font);
 	this->textScore.setString("Score: 0");
 	this->textScore.setCharacterSize(40);
-	this->textScore.setOrigin(0, 0);
+	this->textScore.setOrigin(-20, -10);
+}
+
+void Game::updateLvl()
+{
+	if (this->enemies.size() <= 0) {
+		this->currLvl++;
+		this->generateLvl(this->currLvl);
+		this->bullets.clear();
+	}
 }
 
 Game::Game(sf::RenderWindow& window)
 	:m_window(window), player(window)
 {
 	this->initVeriables();
-	this->generateLvl(1);
+	this->generateLvl(this->currLvl);
 }
 void Game::generateLvl(int level)
 {
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 4; j++) {
-			enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40 + 100.f * i, 40 + 100.f * j), m_window));
+			enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40 + 100.f * i, 80 + 100.f * j), m_window));
 		}
 	}
 	for (auto& e : enemies) {
@@ -86,6 +97,9 @@ void Game::update()
 	this->bulletsUpdate();
 
 	this->bulletsEnemiesColider();
+
+	this->updateLvl();
+
 }
 
 void Game::render()
@@ -93,8 +107,6 @@ void Game::render()
 	m_window.clear();
 	m_window.draw(this->backgroundSprite);
 
-	//player render
-	player.render();
 
 	//enemies render
 	for (int i = 0; i < this->enemies.size(); i++) {
@@ -105,6 +117,9 @@ void Game::render()
 	for (int i = 0; i < this->bullets.size(); i++) {
 		bullets[i]->render();
 	}
+
+	//player render
+	player.render();
 
 	m_window.draw(this->textScore);
 	m_window.display();
