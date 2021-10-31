@@ -14,14 +14,22 @@ class Game
 private:
 	sf::RenderWindow& m_window;
 	Player player;
+	sf::Text textScore;
 
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	std::vector<std::unique_ptr<Bullet>> bullets;
 
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
+	sf::Font font;
+
+	void initVeriables();
+	void initTextScore();
+
 public:
 	Game(sf::RenderWindow& window);
 
-	void generateLvl();
+	void generateLvl(int level);
 
 	void bulletsUpdate();
 	void enemiesUpdate();

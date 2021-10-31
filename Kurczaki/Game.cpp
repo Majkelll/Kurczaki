@@ -1,16 +1,40 @@
 #include "Game.h"
 
+void Game::initVeriables()
+{
+	this->backgroundTexture.loadFromFile("./assets/background.jpg");
+	this->backgroundTexture.setSmooth(true);
+
+	this->backgroundSprite.setTexture(this->backgroundTexture);
+	this->backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1280, 720));
+
+	initTextScore();
+}
+
+void Game::initTextScore()
+{
+	this->font.loadFromFile("./assets/font.ttf");
+	this->textScore.setFont(this->font);
+	this->textScore.setString("Score: 0");
+	this->textScore.setCharacterSize(40);
+	this->textScore.setOrigin(0, 0);
+}
+
 Game::Game(sf::RenderWindow& window)
 	:m_window(window), player(window)
 {
-	this->generateLvl();
+	this->initVeriables();
+	this->generateLvl(1);
 }
-void Game::generateLvl()
+void Game::generateLvl(int level)
 {
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 4; j++) {
 			enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40 + 100.f * i, 40 + 100.f * j), m_window));
 		}
+	}
+	for (auto& e : enemies) {
+		e->set_hp(e->get_hp() * level);
 	}
 }
 void Game::bulletsUpdate()
@@ -29,7 +53,6 @@ void Game::enemiesUpdate()
 		if (this->enemies[i]->get_hp() <= 0) {
 			this->enemies.erase(this->enemies.begin() + i);
 			this->player.set_points(this->player.get_points() + this->enemies[i]->get_coins());
-			std::cout << this->player.get_points() << std::endl;
 		}
 	}
 }
@@ -52,6 +75,7 @@ void Game::update()
 {
 	//player update
 	player.update();
+	this->textScore.setString("Score: " + std::to_string(this->player.get_points()));
 
 	if (player.shoot()) {
 		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->player.get_position().x + this->player.get_size() / 2, this->player.get_position().y + this->player.get_size() / 3), m_window));
@@ -67,6 +91,7 @@ void Game::update()
 void Game::render()
 {
 	m_window.clear();
+	m_window.draw(this->backgroundSprite);
 
 	//player render
 	player.render();
@@ -81,6 +106,7 @@ void Game::render()
 		bullets[i]->render();
 	}
 
+	m_window.draw(this->textScore);
 	m_window.display();
 }
 

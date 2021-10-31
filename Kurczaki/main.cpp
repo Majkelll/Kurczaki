@@ -10,6 +10,7 @@
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kurczaki v.0");
+	window.setFramerateLimit(60);
 	Window windowHandler(window);
 	Game game(window);
 	while (window.isOpen())
