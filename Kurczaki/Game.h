@@ -40,10 +40,9 @@ private:
 	void updateLvl();
 	void eggsUpdate();
 	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2);
-	void generatePowerUps();
+	void generatePowerUps(sf::Vector2f pos);
 	void renderPowerUps();
 	void updatePowerUps();
-
 public:
 	Game(sf::RenderWindow& window);
 	void update();

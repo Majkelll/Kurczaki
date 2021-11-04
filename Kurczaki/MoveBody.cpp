@@ -3,6 +3,7 @@
 MoveBody::MoveBody(sf::RenderWindow& window)
 	:m_window(window)
 {
+	this->kabum = false;
 }
 
 sf::Vector2f MoveBody::get_position() const
@@ -69,6 +70,10 @@ void MoveBody::set_position(sf::Vector2f newPos)
 void MoveBody::update()
 {
 	this->position.y -= this->speed;
+	if (this->position.y > m_window.getSize().y
+		|| this->position.y < 0) {
+		this->set_kabum();
+	}
 }
 
 void MoveBody::render()

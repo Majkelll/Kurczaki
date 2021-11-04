@@ -46,7 +46,6 @@ Game::Game(sf::RenderWindow& window)
 {
 	this->initVeriables();
 	this->generateLvl(this->currLvl);
-	this->generatePowerUps();
 }
 void Game::generateLvl(int level)
 {
@@ -74,6 +73,9 @@ void Game::enemiesUpdate()
 		enemies[i]->update();
 		if (rand() % (3000 / this->currLvl) == 500) {
 			eggs.emplace_back(std::make_unique<Egg>(sf::Vector2f(this->enemies[i]->get_position().x + 25, this->enemies[i]->get_position().y + 90), m_window));
+		}
+		if (rand() % 1000 == 100) {
+			this->generatePowerUps(this->enemies[i]->get_position());
 		}
 		if (std::rand())
 			if (this->enemies[i]->get_hp() <= 0) {
@@ -177,12 +179,10 @@ bool Game::hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2
 	return false;
 }
 
-void Game::generatePowerUps()
+void Game::generatePowerUps(sf::Vector2f pos)
 {
 	this->powerUps.push_back(PowerUp(m_window));
-	for (auto& p : powerUps) {
-		p.initVeriables();
-	}
+	powerUps.back().initVeriables(pos);
 }
 
 void Game::renderPowerUps()
@@ -194,9 +194,11 @@ void Game::renderPowerUps()
 
 void Game::updatePowerUps()
 {
-	for (auto& p : this->powerUps) {
-		p.update();
-		std::cout << p.get_position().x << std::endl;
-		std::cout << p.get_position().y << std::endl;
+	std::list<PowerUp>::iterator it;
+	for (it = powerUps.begin(); it != powerUps.end(); ++it) {
+		it->update();
+		if (it->get_kabum()) {
+			this->powerUps.erase(it);
+		}
 	}
 }
