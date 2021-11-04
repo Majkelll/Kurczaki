@@ -46,6 +46,7 @@ Game::Game(sf::RenderWindow& window)
 {
 	this->initVeriables();
 	this->generateLvl(this->currLvl);
+	this->generatePowerUps();
 }
 void Game::generateLvl(int level)
 {
@@ -71,13 +72,13 @@ void Game::enemiesUpdate()
 {
 	for (int i = 0; i < this->enemies.size(); i++) {
 		enemies[i]->update();
-		if (rand() % 3000 == 500) {
+		if (rand() % (3000 / this->currLvl) == 500) {
 			eggs.emplace_back(std::make_unique<Egg>(sf::Vector2f(this->enemies[i]->get_position().x + 25, this->enemies[i]->get_position().y + 90), m_window));
 		}
 		if (std::rand())
 			if (this->enemies[i]->get_hp() <= 0) {
 				this->enemies.erase(this->enemies.begin() + i);
-				this->player.set_points(this->player.get_points() + this->enemies[i]->get_coins());
+				this->player.set_points(this->player.get_points() + 5 * this->currLvl);
 			}
 	}
 }
@@ -130,6 +131,8 @@ void Game::update()
 
 	this->eggsPlayerColider();
 
+	this->updatePowerUps();
+
 }
 
 void Game::render()
@@ -155,8 +158,10 @@ void Game::render()
 
 	//player render
 	player.render();
+	//text score render
 	m_window.draw(this->textScore);
-
+	//buffs render
+	this->renderPowerUps();
 	m_window.display();
 }
 
@@ -170,4 +175,28 @@ bool Game::hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2
 		return true;
 	}
 	return false;
+}
+
+void Game::generatePowerUps()
+{
+	this->powerUps.push_back(PowerUp(m_window));
+	for (auto& p : powerUps) {
+		p.initVeriables();
+	}
+}
+
+void Game::renderPowerUps()
+{
+	for (auto& p : this->powerUps) {
+		p.render();
+	}
+}
+
+void Game::updatePowerUps()
+{
+	for (auto& p : this->powerUps) {
+		p.update();
+		std::cout << p.get_position().x << std::endl;
+		std::cout << p.get_position().y << std::endl;
+	}
 }
