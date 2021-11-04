@@ -24,6 +24,10 @@ private:
 	int weaponLvl;
 	int speedLvl;
 	int shootLvl;
+	int shootTimer;
+
+	int godModeTimer;
+	bool godMode;
 
 	sf::Texture hpTexture;
 
@@ -42,11 +46,14 @@ public:
 	sf::Vector2f get_position();
 	float get_size();
 	int get_points();
+	int get_hp();
+	bool get_godMode();
+
+	void on_godMode();
 	void set_points(int newPoints);
 	void set_hp(int newHp);
-	int get_hp();
+	
 	bool shoot();
-
 	void update();
 	void render();
 };

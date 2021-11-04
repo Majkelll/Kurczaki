@@ -12,7 +12,8 @@ int PowerUp::get_buffValue()
 
 void PowerUp::initVeriables(sf::Vector2f newPos)
 {
-	this->buff = rand() % 5;
+	//this->buff = rand() % 6;
+	this->buff = 1;
 	this->set_speed(-5);
 	this->set_damage(1);
 	this->set_size(40);
@@ -25,7 +26,7 @@ void PowerUp::initVeriables(sf::Vector2f newPos)
 		break;
 	case 1:
 		tempTexture.loadFromFile("./assets/heart2.png");
-		break :
+		break;
 	default:
 		tempTexture.loadFromFile("./assets/heart2.png");
 	}

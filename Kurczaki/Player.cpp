@@ -6,9 +6,9 @@ void Player::initVeriables()
 	this->position.y = 720 - 150;
 	this->hp = 3;
 	this->points = 0;
-	this->speed = 10.f;
+	this->speed = 5.f;
 	this->size = 100.f;
-	this->shootSpeed = 1.f;
+	this->shootSpeed = 5;
 	this->weaponLvl = 1;
 	this->speedLvl = 1;
 	this->shootLvl = 1;
@@ -103,6 +103,12 @@ int Player::get_points()
 	return this->points;
 }
 
+void Player::on_godMode()
+{
+	this->godMode = true;
+	this->godModeTimer = 300;
+}
+
 void Player::set_points(int newPoints)
 {
 	this->points = newPoints;
@@ -118,11 +124,18 @@ int Player::get_hp()
 	return this->hp;
 }
 
+bool Player::get_godMode()
+{
+	return this->godMode;
+}
+
 bool Player::shoot()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->shootTimer < 0) {
+		this->shootTimer = this->shootSpeed;
 		return true;
 	}
+	this->shootTimer -= 1;
 	return false;
 }
 
@@ -135,7 +148,13 @@ Player::Player(sf::RenderWindow& window)
 
 void Player::update()
 {
-	//player update
+	//TO DO
+	if (this->godModeTimer > 0 && this->godMode == true) {
+		this->godModeTimer--;
+	}
+	else {
+		this->godMode = false;
+	}
 	this->move();
 	this->shoot();
 	this->hpUpdate();
@@ -144,8 +163,6 @@ void Player::update()
 
 void Player::render()
 {
-	//player render
 	m_window.draw(this->sprite);
-	//hp render
 	this->hpRender();
 }

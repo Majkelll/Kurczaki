@@ -51,7 +51,7 @@ void Game::generateLvl(int level)
 {
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 4; j++) {
-			enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40 + 100.f * i, 80 + 100.f * j), m_window));
+			enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40 + 100.f * i, 60 + 100.f * j), m_window));
 		}
 	}
 	for (auto& e : enemies) {
@@ -71,7 +71,7 @@ void Game::enemiesUpdate()
 {
 	for (int i = 0; i < this->enemies.size(); i++) {
 		enemies[i]->update();
-		if (rand() % (3000 / this->currLvl) == 500) {
+		if (rand() % (1000 / this->currLvl) == 500) {
 			eggs.emplace_back(std::make_unique<Egg>(sf::Vector2f(this->enemies[i]->get_position().x + 25, this->enemies[i]->get_position().y + 90), m_window));
 		}
 		if (rand() % 1000 == 100) {
@@ -105,7 +105,8 @@ void Game::eggsPlayerColider()
 		if (this->hitbox(eggs[i]->get_position(),
 			this->player.get_position(),
 			this->eggs[i]->get_size(),
-			this->player.get_size())) {
+			this->player.get_size())
+			&& !this->player.get_godMode()) {
 			this->player.set_hp(this->player.get_hp() - 1);
 			this->eggs.erase(this->eggs.begin() + i);
 		}
@@ -197,7 +198,17 @@ void Game::updatePowerUps()
 	std::list<PowerUp>::iterator it;
 	for (it = powerUps.begin(); it != powerUps.end(); ++it) {
 		it->update();
+		std::cout << this->player.get_godMode() << std::endl;
 		if (it->get_kabum()) {
+			this->powerUps.erase(it);
+		}
+		if (this->hitbox(this->player.get_position(), it->get_position(), this->player.get_size(), it->get_size())) {
+			switch (it->get_buff()) {
+			case 0:
+				this->player.set_hp(this->player.get_hp() + 1);
+			case 1:
+				this->player.on_godMode();
+			}
 			this->powerUps.erase(it);
 		}
 	}
