@@ -18,12 +18,18 @@ void Player::initVeriables()
 
 	this->hpTexture.loadFromFile("./assets/heart.png");
 	this->hpTexture.setSmooth(true);
+
+	this->shieldTexture.loadFromFile("./assets/shield.png");
+	this->shieldTexture.setSmooth(true);
 }
 
 void Player::initShape()
 {
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+
+	this->shieldSprite.setTexture(this->shieldTexture);
+	this->shieldSprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
 }
 
 void Player::moveColider()
@@ -119,6 +125,19 @@ void Player::set_hp(int newHp)
 	this->hp = newHp;
 }
 
+void Player::set_shootSpeed(float newSpeed)
+{
+	this->shootSpeed = newSpeed;
+	if (newSpeed < 0) {
+		this->shootSpeed = 0;
+	}
+}
+
+void Player::set_speed(float newSpeed)
+{
+	this->speed = newSpeed;
+}
+
 int Player::get_hp()
 {
 	return this->hp;
@@ -127,6 +146,16 @@ int Player::get_hp()
 bool Player::get_godMode()
 {
 	return this->godMode;
+}
+
+float Player::get_shootSpeed()
+{
+	return this->shootSpeed;
+}
+
+float Player::get_speed()
+{
+	return this->speed;
 }
 
 bool Player::shoot()
@@ -148,7 +177,6 @@ Player::Player(sf::RenderWindow& window)
 
 void Player::update()
 {
-	//TO DO
 	if (this->godModeTimer > 0 && this->godMode == true) {
 		this->godModeTimer--;
 	}
@@ -158,11 +186,15 @@ void Player::update()
 	this->move();
 	this->shoot();
 	this->hpUpdate();
+	this->shieldSprite.setPosition(this->position);
 	this->sprite.setPosition(this->position);
 }
 
 void Player::render()
 {
 	m_window.draw(this->sprite);
+	if (this->godMode) {
+		m_window.draw(this->shieldSprite);
+	}
 	this->hpRender();
 }

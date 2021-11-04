@@ -21,9 +21,11 @@ public:
 	sf::Vector2f get_position();
 	int get_size();
 	int get_damage();
+	int get_speed();
 
-	bool destruct();
+	void set_speed(int newSpeed);
 	void set_kabum();
+	bool destruct();
 	void update();
 	void render();
 };

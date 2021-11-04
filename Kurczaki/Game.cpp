@@ -198,7 +198,6 @@ void Game::updatePowerUps()
 	std::list<PowerUp>::iterator it;
 	for (it = powerUps.begin(); it != powerUps.end(); ++it) {
 		it->update();
-		std::cout << this->player.get_godMode() << std::endl;
 		if (it->get_kabum()) {
 			this->powerUps.erase(it);
 		}
@@ -206,8 +205,21 @@ void Game::updatePowerUps()
 			switch (it->get_buff()) {
 			case 0:
 				this->player.set_hp(this->player.get_hp() + 1);
+				break;
 			case 1:
 				this->player.on_godMode();
+				break;
+			case 2:
+				this->player.set_shootSpeed(this->player.get_shootSpeed() - 1);
+				break;
+			case 3:
+				for (auto& a : this->eggs) {
+					a->set_speed(a->get_speed() - 4);
+				}
+				break;
+			case 4:
+				this->player.set_speed(this->player.get_speed() + 1);
+				break;
 			}
 			this->powerUps.erase(it);
 		}

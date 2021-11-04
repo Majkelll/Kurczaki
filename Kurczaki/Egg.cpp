@@ -50,6 +50,11 @@ int Egg::get_damage()
 	return this->damage;
 }
 
+int Egg::get_speed()
+{
+	return this->speed;
+}
+
 bool Egg::destruct()
 {
 	if (this->position.y > 1500 - this->size ||
@@ -57,6 +62,11 @@ bool Egg::destruct()
 		return true;
 	}
 	return false;
+}
+
+void Egg::set_speed(int newSpeed)
+{
+	this->speed = newSpeed;
 }
 
 void Egg::set_kabum()

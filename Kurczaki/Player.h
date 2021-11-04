@@ -14,6 +14,8 @@ private:
 	sf::Vector2f position;
 	sf::Texture texture;
 	sf::Sprite sprite;
+	sf::Texture shieldTexture;
+	sf::Sprite shieldSprite;
 	sf::RenderWindow& m_window;
 
 	int hp;
@@ -48,10 +50,14 @@ public:
 	int get_points();
 	int get_hp();
 	bool get_godMode();
+	float get_shootSpeed();
+	float get_speed();
 
 	void on_godMode();
 	void set_points(int newPoints);
 	void set_hp(int newHp);
+	void set_shootSpeed(float newSpeed);
+	void set_speed(float newSpeed);
 	
 	bool shoot();
 	void update();
