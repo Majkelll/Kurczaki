@@ -47,6 +47,7 @@ void Bullet::set_kabum()
 void Bullet::update()
 {
 	this->position.y -= this->speed;
+	this->destruct();
 }
 
 void Bullet::render()

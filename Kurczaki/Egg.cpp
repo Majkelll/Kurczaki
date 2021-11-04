@@ -3,6 +3,7 @@
 void Egg::update()
 {
 	this->position.y += this->speed;
+	this->destruct();
 }
 
 void Egg::render()

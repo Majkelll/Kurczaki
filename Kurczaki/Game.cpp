@@ -71,10 +71,10 @@ void Game::enemiesUpdate()
 {
 	for (int i = 0; i < this->enemies.size(); i++) {
 		enemies[i]->update();
-		if (rand() % (1000 / this->currLvl) == 500) {
+		if (rand() % (3000 / this->currLvl) == 500) {
 			eggs.emplace_back(std::make_unique<Egg>(sf::Vector2f(this->enemies[i]->get_position().x + 25, this->enemies[i]->get_position().y + 90), m_window));
 		}
-		if (rand() % 1000 == 100) {
+		if (rand() % 5000 == 100) {
 			this->generatePowerUps(this->enemies[i]->get_position());
 		}
 		if (std::rand())
@@ -135,6 +135,8 @@ void Game::update()
 	this->eggsPlayerColider();
 
 	this->updatePowerUps();
+
+	std::cout << this->eggs.size() << std::endl;
 
 }
 
