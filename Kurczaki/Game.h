@@ -32,17 +32,27 @@ private:
 
 	void initVeriables();
 	void generateLvl(int level);
-	void bulletsUpdate();
-	void enemiesUpdate();
 	void bulletsEnemiesColider();
 	void eggsPlayerColider();
 	void initTextScore();
-	void updateLvl();
-	void eggsUpdate();
 	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2);
 	void generatePowerUps(sf::Vector2f pos);
+
 	void renderPowerUps();
+	void renderEggs();
+	void renderEnemies();
+	void renderBullets();
+	void renderBackground();
+	void renderScore();
+
+	void updateShoot();
+	void updateEnemies();
+	void updateLvl();
+	void updateEggs();
 	void updatePowerUps();
+	void updateText();
+	void updateBullets();
+
 public:
 	Game(sf::RenderWindow& window);
 	void update();

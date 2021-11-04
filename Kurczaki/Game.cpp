@@ -31,7 +31,7 @@ void Game::updateLvl()
 	}
 }
 
-void Game::eggsUpdate()
+void Game::updateEggs()
 {
 	for (int i = 0; i < this->eggs.size(); i++) {
 		eggs[i]->update();
@@ -54,11 +54,12 @@ void Game::generateLvl(int level)
 			enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40 + 100.f * i, 60 + 100.f * j), m_window));
 		}
 	}
+
 	for (auto& e : enemies) {
 		e->set_hp(e->get_hp() * level);
 	}
 }
-void Game::bulletsUpdate()
+void Game::updateBullets()
 {
 	for (int i = 0; i < this->bullets.size(); i++) {
 		bullets[i]->update();
@@ -67,7 +68,13 @@ void Game::bulletsUpdate()
 		}
 	}
 }
-void Game::enemiesUpdate()
+void Game::updateShoot()
+{
+	if (player.shoot()) {
+		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->player.get_position().x + this->player.get_size() / 2, this->player.get_position().y + this->player.get_size() / 3), m_window));
+	}
+}
+void Game::updateEnemies()
 {
 	for (int i = 0; i < this->enemies.size(); i++) {
 		enemies[i]->update();
@@ -77,11 +84,10 @@ void Game::enemiesUpdate()
 		if (rand() % 5000 == 100) {
 			this->generatePowerUps(this->enemies[i]->get_position());
 		}
-		if (std::rand())
-			if (this->enemies[i]->get_hp() <= 0) {
-				this->enemies.erase(this->enemies.begin() + i);
-				this->player.set_points(this->player.get_points() + 5 * this->currLvl);
-			}
+		if (this->enemies[i]->get_hp() <= 0) {
+			this->enemies.erase(this->enemies.begin() + i);
+			this->player.set_points(this->player.get_points() + 5 * this->currLvl);
+		}
 	}
 }
 void Game::bulletsEnemiesColider()
@@ -114,59 +120,31 @@ void Game::eggsPlayerColider()
 }
 void Game::update()
 {
-	//player update
-	player.update();
-	this->textScore.setString("Score: " + std::to_string(this->player.get_points()));
 
-	if (player.shoot()) {
-		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->player.get_position().x + this->player.get_size() / 2, this->player.get_position().y + this->player.get_size() / 3), m_window));
-	}
-
-	this->enemiesUpdate();
-
-	this->bulletsUpdate();
-
-	this->eggsUpdate();
-
+	this->updateShoot();
+	this->player.update();
+	this->updateText();
+	this->updateEnemies();
+	this->updateBullets();
+	this->updateEggs();
 	this->bulletsEnemiesColider();
-
 	this->updateLvl();
-
 	this->eggsPlayerColider();
-
 	this->updatePowerUps();
-
-	std::cout << this->eggs.size() << std::endl;
-
 }
 
 void Game::render()
 {
 	m_window.clear();
-	m_window.draw(this->backgroundSprite);
 
-	//eggs render
-	for (int i = 0; i < this->eggs.size(); i++) {
-		eggs[i]->render();
-	}
-
-	//enemies render
-	for (int i = 0; i < this->enemies.size(); i++) {
-		enemies[i]->render();
-	}
-
-	//bullets render
-	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i]->render();
-	}
-
-
-	//player render
-	player.render();
-	//text score render
-	m_window.draw(this->textScore);
-	//buffs render
+	this->renderBackground();
+	this->renderEggs();
+	this->renderEnemies();
+	this->renderBullets();
+	this->player.render();
+	this->renderScore();
 	this->renderPowerUps();
+
 	m_window.display();
 }
 
@@ -193,6 +171,37 @@ void Game::renderPowerUps()
 	for (auto& p : this->powerUps) {
 		p.render();
 	}
+}
+
+void Game::renderEggs()
+{
+	for (int i = 0; i < this->eggs.size(); i++) {
+		eggs[i]->render();
+	}
+}
+
+void Game::renderEnemies()
+{
+	for (int i = 0; i < this->enemies.size(); i++) {
+		enemies[i]->render();
+	}
+}
+
+void Game::renderBullets()
+{
+	for (int i = 0; i < this->bullets.size(); i++) {
+		bullets[i]->render();
+	}
+}
+
+void Game::renderBackground()
+{
+	m_window.draw(this->backgroundSprite);
+}
+
+void Game::renderScore()
+{
+	m_window.draw(this->textScore);
 }
 
 void Game::updatePowerUps()
@@ -226,4 +235,9 @@ void Game::updatePowerUps()
 			this->powerUps.erase(it);
 		}
 	}
+}
+
+void Game::updateText()
+{
+	this->textScore.setString("Score: " + std::to_string(this->player.get_points()));
 }
