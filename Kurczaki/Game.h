@@ -35,7 +35,7 @@ private:
 	void bulletsEnemiesColider();
 	void eggsPlayerColider();
 	void initTextScore();
-	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2);
+	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2);
 	void generatePowerUps(sf::Vector2f pos);
 
 	void renderPowerUps();

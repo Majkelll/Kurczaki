@@ -7,7 +7,7 @@ void Player::initVeriables()
 	this->hp = 3;
 	this->points = 0;
 	this->speed = 5.f;
-	this->size = 100.f;
+	this->size = 100;
 	this->shootSpeed = 5;
 	this->weaponLvl = 1;
 	this->speedLvl = 1;
@@ -99,7 +99,7 @@ sf::Vector2f Player::get_position()
 	return this->position;
 }
 
-float Player::get_size()
+int Player::get_size()
 {
 	return this->size;
 }

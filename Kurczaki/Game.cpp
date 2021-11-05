@@ -148,7 +148,7 @@ void Game::render()
 	m_window.display();
 }
 
-bool Game::hitbox(sf::Vector2f pos1, sf::Vector2f pos2, float size1, float size2)
+bool Game::hitbox(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2)
 {
 	if (pos1.x < pos2.x + size2 &&
 		pos1.x + size1 > pos2.x &&
@@ -206,14 +206,14 @@ void Game::renderScore()
 
 void Game::updatePowerUps()
 {
-	std::list<PowerUp>::iterator it;
-	for (it = powerUps.begin(); it != powerUps.end(); ++it) {
-		it->update();
-		if (it->get_kabum()) {
-			this->powerUps.erase(it);
+	std::list<PowerUp>::iterator buff;
+	for (buff = powerUps.begin(); buff != powerUps.end(); ++buff) {
+		buff->update();
+		if (buff->get_kabum()) {
+			this->powerUps.erase(buff);
 		}
-		if (this->hitbox(this->player.get_position(), it->get_position(), this->player.get_size(), it->get_size())) {
-			switch (it->get_buff()) {
+		if (this->hitbox(this->player.get_position(), buff->get_position(), this->player.get_size(), buff->get_size())) {
+			switch (buff->get_buff()) {
 			case 0:
 				this->player.set_hp(this->player.get_hp() + 1);
 				break;
@@ -232,7 +232,7 @@ void Game::updatePowerUps()
 				this->player.set_speed(this->player.get_speed() + 1);
 				break;
 			}
-			this->powerUps.erase(it);
+			this->powerUps.erase(buff);
 		}
 	}
 }

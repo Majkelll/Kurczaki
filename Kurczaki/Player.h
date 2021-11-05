@@ -21,8 +21,8 @@ private:
 	int hp;
 	int points;
 	float speed;
-	float size;
 	float shootSpeed;
+	int size;
 	int weaponLvl;
 	int speedLvl;
 	int shootLvl;
@@ -46,7 +46,7 @@ public:
 	Player(sf::RenderWindow& window);
 
 	sf::Vector2f get_position();
-	float get_size();
+	int get_size();
 	int get_points();
 	int get_hp();
 	bool get_godMode();
@@ -58,7 +58,7 @@ public:
 	void set_hp(int newHp);
 	void set_shootSpeed(float newSpeed);
 	void set_speed(float newSpeed);
-	
+
 	bool shoot();
 	void update();
 	void render();
