@@ -8,7 +8,7 @@ void Player::initVeriables()
 	this->points = 0;
 	this->speed = 5.f;
 	this->size = 100;
-	this->shootSpeed = 5;
+	this->shootSpeed = 25;
 	this->weaponLvl = 1;
 	this->speedLvl = 1;
 	this->shootLvl = 1;

@@ -8,8 +8,8 @@
 
 #include "Player.h"
 #include "Enemy.h"
-#include "Egg.h"
 #include "PowerUp.h"
+#include "Egg.h"
 
 class Game
 {
@@ -20,9 +20,9 @@ private:
 
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	std::vector<std::unique_ptr<Bullet>> bullets;
-	std::vector<std::unique_ptr<Egg>> eggs;
-	std::list<PowerUp> powerUps;
 
+	std::list<PowerUp> powerUps;
+	std::list<Egg> eggs;
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
@@ -33,25 +33,24 @@ private:
 	void initVeriables();
 	void generateLvl(int level);
 	void bulletsEnemiesColider();
-	void eggsPlayerColider();
 	void initTextScore();
 	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2);
 	void generatePowerUps(sf::Vector2f pos);
 
 	void renderPowerUps();
-	void renderEggs();
 	void renderEnemies();
 	void renderBullets();
 	void renderBackground();
 	void renderScore();
+	void renderEggs();
 
 	void updateShoot();
 	void updateEnemies();
 	void updateLvl();
-	void updateEggs();
 	void updatePowerUps();
 	void updateText();
 	void updateBullets();
+	void updateEggs();
 
 public:
 	Game(sf::RenderWindow& window);

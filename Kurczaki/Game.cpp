@@ -31,16 +31,6 @@ void Game::updateLvl()
 	}
 }
 
-void Game::updateEggs()
-{
-	for (int i = 0; i < this->eggs.size(); i++) {
-		eggs[i]->update();
-		if (eggs[i]->destruct()) {
-			eggs.erase(eggs.begin() + i);
-		}
-	}
-}
-
 Game::Game(sf::RenderWindow& window)
 	:m_window(window), player(window)
 {
@@ -68,6 +58,22 @@ void Game::updateBullets()
 		}
 	}
 }
+void Game::updateEggs()
+{
+	std::list<Egg>::iterator egg;
+	for (egg = eggs.begin(); egg != eggs.end(); ++egg) {
+		egg->update();
+		if (egg->get_kabum()) {
+			this->eggs.erase(egg);
+		}
+		if ((this->hitbox(this->player.get_position(), egg->get_position(), this->player.get_size(), egg->get_size()))
+			&& !this->player.get_godMode())
+		{
+			this->player.set_hp(this->player.get_hp() - 1);
+			this->eggs.erase(egg);
+		}
+	}
+}
 void Game::updateShoot()
 {
 	if (player.shoot()) {
@@ -79,7 +85,8 @@ void Game::updateEnemies()
 	for (int i = 0; i < this->enemies.size(); i++) {
 		enemies[i]->update();
 		if (rand() % (3000 / this->currLvl) == 500) {
-			eggs.emplace_back(std::make_unique<Egg>(sf::Vector2f(this->enemies[i]->get_position().x + 25, this->enemies[i]->get_position().y + 90), m_window));
+			this->eggs.push_back(Egg(m_window));
+			eggs.back().initVeriables(this->enemies[i]->get_position());
 		}
 		if (rand() % 5000 == 100) {
 			this->generatePowerUps(this->enemies[i]->get_position());
@@ -105,19 +112,6 @@ void Game::bulletsEnemiesColider()
 		}
 	}
 }
-void Game::eggsPlayerColider()
-{
-	for (int i = 0; i < this->eggs.size(); i++) {
-		if (this->hitbox(eggs[i]->get_position(),
-			this->player.get_position(),
-			this->eggs[i]->get_size(),
-			this->player.get_size())
-			&& !this->player.get_godMode()) {
-			this->player.set_hp(this->player.get_hp() - 1);
-			this->eggs.erase(this->eggs.begin() + i);
-		}
-	}
-}
 void Game::update()
 {
 
@@ -126,11 +120,10 @@ void Game::update()
 	this->updateText();
 	this->updateEnemies();
 	this->updateBullets();
-	this->updateEggs();
 	this->bulletsEnemiesColider();
 	this->updateLvl();
-	this->eggsPlayerColider();
 	this->updatePowerUps();
+	this->updateEggs();
 }
 
 void Game::render()
@@ -138,12 +131,12 @@ void Game::render()
 	m_window.clear();
 
 	this->renderBackground();
-	this->renderEggs();
 	this->renderEnemies();
 	this->renderBullets();
 	this->player.render();
 	this->renderScore();
 	this->renderPowerUps();
+	this->renderEggs();
 
 	m_window.display();
 }
@@ -173,13 +166,6 @@ void Game::renderPowerUps()
 	}
 }
 
-void Game::renderEggs()
-{
-	for (int i = 0; i < this->eggs.size(); i++) {
-		eggs[i]->render();
-	}
-}
-
 void Game::renderEnemies()
 {
 	for (int i = 0; i < this->enemies.size(); i++) {
@@ -204,6 +190,13 @@ void Game::renderScore()
 	m_window.draw(this->textScore);
 }
 
+void Game::renderEggs()
+{
+	for (auto& e : this->eggs) {
+		e.render();
+	}
+}
+
 void Game::updatePowerUps()
 {
 	std::list<PowerUp>::iterator buff;
@@ -221,11 +214,11 @@ void Game::updatePowerUps()
 				this->player.on_godMode();
 				break;
 			case 2:
-				this->player.set_shootSpeed(this->player.get_shootSpeed() - 1);
+				this->player.set_shootSpeed(this->player.get_shootSpeed() - 10);
 				break;
 			case 3:
 				for (auto& a : this->eggs) {
-					a->set_speed(a->get_speed() - 4);
+					a.set_speed(a.get_speed() + 4);
 				}
 				break;
 			case 4:

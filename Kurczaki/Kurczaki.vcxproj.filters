@@ -33,13 +33,13 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Egg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PowerUp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MoveBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Egg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,13 +59,13 @@
     <ClInclude Include="Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Egg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PowerUp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MoveBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Egg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
