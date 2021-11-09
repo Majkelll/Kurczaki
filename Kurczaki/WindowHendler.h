@@ -5,13 +5,13 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
-class Window
+class WindowHendler
 {
 private:
 	sf::RenderWindow& m_window;
 	int renderState;
 public:
-	Window(sf::RenderWindow& window);
+	WindowHendler(sf::RenderWindow& window);
 	void eventBasicHandler();
 
 	void set_renderState(int newRenderState);

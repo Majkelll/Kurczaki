@@ -1,13 +1,13 @@
-#include "Window.h"
+#include "WindowHendler.h"
 
-Window::Window(sf::RenderWindow& window)
+WindowHendler::WindowHendler(sf::RenderWindow& window)
 	:m_window(window)
 {
 	window.setFramerateLimit(60);
 	this->renderState = 1;
 }
 
-void Window::eventBasicHandler()
+void WindowHendler::eventBasicHandler()
 {
 	sf::Event ev;
 	while (m_window.pollEvent(ev))
@@ -18,19 +18,19 @@ void Window::eventBasicHandler()
 			break;
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape) {
-				this->set_renderState(0);
+				this->set_renderState(2);
 			}
 			break;
 		}
 	}
 }
 
-void Window::set_renderState(int newRenderState)
+void WindowHendler::set_renderState(int newRenderState)
 {
 	this->renderState = newRenderState;
 }
 
-int Window::get_renderState()
+int WindowHendler::get_renderState()
 {
 	return this->renderState;
 }
