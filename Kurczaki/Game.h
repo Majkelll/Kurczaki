@@ -10,7 +10,7 @@
 #include "Enemy.h"
 #include "PowerUp.h"
 #include "Egg.h"
-#include "Bullet_v2.h"
+#include "Bullet.h"
 
 class Game
 {
