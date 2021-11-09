@@ -29,8 +29,8 @@ void Game::updateLvl()
 	}
 }
 
-Game::Game(sf::RenderWindow& window)
-	:m_window(window), player(window)
+Game::Game(sf::RenderWindow& window, Window& m_windowHandler)
+	:m_window(window), player(window), m_windowHandler(m_windowHandler)
 {
 	this->initVeriables();
 	this->generateLvl(this->currLvl);
