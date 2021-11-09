@@ -13,7 +13,6 @@ int PowerUp::get_buffValue()
 void PowerUp::initVeriables(sf::Vector2f newPos)
 {
 	this->buff = rand() % 5;
-	this->buff = 3;
 	this->set_speed(-5);
 	this->set_damage(1);
 	this->set_size(40);

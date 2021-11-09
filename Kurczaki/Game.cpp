@@ -9,7 +9,6 @@ void Game::initVeriables()
 	this->backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1280, 720));
 
 	this->currLvl = 1;
-
 	initTextScore();
 }
 
@@ -27,7 +26,6 @@ void Game::updateLvl()
 	if (this->enemies.size() <= 0) {
 		this->currLvl++;
 		this->generateLvl(this->currLvl);
-		this->bullets.clear();
 	}
 }
 
@@ -49,15 +47,6 @@ void Game::generateLvl(int level)
 		e->set_hp(e->get_hp() * level);
 	}
 }
-void Game::updateBullets()
-{
-	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i]->update();
-		if (bullets[i]->destruct()) {
-			bullets.erase(bullets.begin() + i);
-		}
-	}
-}
 void Game::updateEggs()
 {
 	std::list<Egg>::iterator egg;
@@ -74,10 +63,36 @@ void Game::updateEggs()
 		}
 	}
 }
+void Game::updateBullets()
+{
+	std::list<Bullet_v2>::iterator bullet;
+	for (bullet = this->bullets_v2.begin(); bullet != this->bullets_v2.end(); ++bullet) {
+		bullet->update();
+		if (bullet->get_kabum()) {
+			this->bullets_v2.erase(bullet);
+		}
+	}
+}
+void Game::updateHitBoxBulletsEnemies()
+{
+	std::list<Bullet_v2>::iterator bullet;
+	for (bullet = this->bullets_v2.begin(); bullet != this->bullets_v2.end(); ++bullet) {
+		for (int i = 0; i < this->enemies.size(); i++) {
+			if (this->hitbox(bullet->get_position(),this->enemies[i]->get_position(),bullet->get_size(),this->enemies[i]->get_size())) {
+				this->enemies[i]->set_hp(this->enemies[i]->get_hp() - bullet->get_damage());
+				this->bullets_v2.erase(bullet);
+			}
+		}
+	}
+}
 void Game::updateShoot()
 {
 	if (player.shoot()) {
-		bullets.emplace_back(std::make_unique<Bullet>(sf::Vector2f(this->player.get_position().x + this->player.get_size() / 2, this->player.get_position().y + this->player.get_size() / 3), m_window));
+		this->bullets_v2.push_back(Bullet_v2(m_window));
+		this->bullets_v2.back().initVeriables(sf::Vector2f(
+			this->player.get_position().x + this->player.get_size()/2,
+			this->player.get_position().y
+		));
 	}
 }
 void Game::updateEnemies()
@@ -97,33 +112,17 @@ void Game::updateEnemies()
 		}
 	}
 }
-void Game::bulletsEnemiesColider()
-{
-	for (int i = 0; i < this->enemies.size(); i++) {
-		for (int j = 0; j < this->bullets.size(); j++) {
-			if (this->hitbox(enemies[i]->get_position(),
-				this->bullets[j]->get_position(),
-				this->enemies[i]->get_size(),
-				this->bullets[j]->get_size()))
-			{
-				this->enemies[i]->set_hp(this->enemies[i]->get_hp() - this->bullets[j]->get_damage());
-				this->bullets.erase(this->bullets.begin() + j);
-			}
-		}
-	}
-}
 void Game::update()
 {
-
 	this->updateShoot();
 	this->player.update();
 	this->updateText();
 	this->updateEnemies();
-	this->updateBullets();
-	this->bulletsEnemiesColider();
 	this->updateLvl();
 	this->updatePowerUps();
 	this->updateEggs();
+	this->updateBullets();
+	this->updateHitBoxBulletsEnemies();
 }
 
 void Game::render()
@@ -132,11 +131,11 @@ void Game::render()
 
 	this->renderBackground();
 	this->renderEnemies();
-	this->renderBullets();
 	this->player.render();
 	this->renderScore();
 	this->renderPowerUps();
 	this->renderEggs();
+	this->renderBullets();
 
 	m_window.display();
 }
@@ -173,13 +172,6 @@ void Game::renderEnemies()
 	}
 }
 
-void Game::renderBullets()
-{
-	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i]->render();
-	}
-}
-
 void Game::renderBackground()
 {
 	m_window.draw(this->backgroundSprite);
@@ -194,6 +186,13 @@ void Game::renderEggs()
 {
 	for (auto& e : this->eggs) {
 		e.render();
+	}
+}
+
+void Game::renderBullets()
+{
+	for (auto& b : this->bullets_v2) {
+		b.render();
 	}
 }
 
