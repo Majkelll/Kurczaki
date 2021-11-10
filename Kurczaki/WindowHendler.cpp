@@ -4,7 +4,7 @@ WindowHendler::WindowHendler(sf::RenderWindow& window)
 	:m_window(window)
 {
 	window.setFramerateLimit(60);
-	this->renderState = 1;
+	this->renderState = 2;
 }
 
 void WindowHendler::eventBasicHandler()

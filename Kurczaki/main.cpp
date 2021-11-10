@@ -12,18 +12,19 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kurczaki v.0");
 	window.setFramerateLimit(60);
 	WindowHendler windowHandler(window);
-	Game game(window,windowHandler);
-	Menu menu(window, windowHandler);
+	Menu menu(window);
+	Game game(window);
 	while (window.isOpen())
 	{
 		windowHandler.eventBasicHandler();
-		if (windowHandler.get_renderState() == 1) {
-			game.update();
-			game.render();
-		}
-		else if (windowHandler.get_renderState() == 2) {
+		if (menu.get_renderMe()) {
 			menu.update();
 			menu.render();
+
+		}
+		else {
+			game.update();
+			game.render();
 		}
 	}
 	return 0;

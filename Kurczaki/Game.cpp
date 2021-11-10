@@ -29,8 +29,8 @@ void Game::updateLvl()
 	}
 }
 
-Game::Game(sf::RenderWindow& window, WindowHendler& m_windowHandler)
-	:m_window(window), player(window), m_windowHandler(m_windowHandler)
+Game::Game(sf::RenderWindow& window)
+	:m_window(window), player(window)
 {
 	this->initVeriables();
 	this->generateLvl(this->currLvl);
@@ -78,7 +78,7 @@ void Game::updateHitBoxBulletsEnemies()
 	std::list<Bullet_v2>::iterator bullet;
 	for (bullet = this->bullets_v2.begin(); bullet != this->bullets_v2.end(); ++bullet) {
 		for (int i = 0; i < this->enemies.size(); i++) {
-			if (this->hitbox(bullet->get_position(),this->enemies[i]->get_position(),bullet->get_size(),this->enemies[i]->get_size())) {
+			if (this->hitbox(bullet->get_position(), this->enemies[i]->get_position(), bullet->get_size(), this->enemies[i]->get_size())) {
 				this->enemies[i]->set_hp(this->enemies[i]->get_hp() - bullet->get_damage());
 				this->bullets_v2.erase(bullet);
 			}
@@ -90,7 +90,7 @@ void Game::updateShoot()
 	if (player.shoot()) {
 		this->bullets_v2.push_back(Bullet_v2(m_window));
 		this->bullets_v2.back().initVeriables(sf::Vector2f(
-			this->player.get_position().x + this->player.get_size()/2,
+			this->player.get_position().x + this->player.get_size() / 2,
 			this->player.get_position().y
 		));
 	}

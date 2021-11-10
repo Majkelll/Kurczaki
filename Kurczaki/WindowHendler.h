@@ -15,6 +15,5 @@ public:
 	void eventBasicHandler();
 
 	void set_renderState(int newRenderState);
-
 	int get_renderState();
 };

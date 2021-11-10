@@ -10,14 +10,13 @@
 #include "Enemy.h"
 #include "PowerUp.h"
 #include "Egg.h"
-#include "Bullet.h"
 #include "WindowHendler.h"
+#include "Bullet.h"
 
 class Game
 {
 private:
 	sf::RenderWindow& m_window;
-	WindowHendler& m_windowHandler;
 	Player player;
 	sf::Text textScore;
 
@@ -57,7 +56,7 @@ private:
 	void updateBullets();
 
 public:
-	Game(sf::RenderWindow& window, WindowHendler& windowHandler);
+	Game(sf::RenderWindow& window);
 	void update();
 	void render();
 };
