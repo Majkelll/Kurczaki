@@ -4,7 +4,7 @@ WindowHendler::WindowHendler(sf::RenderWindow& window)
 	:m_window(window)
 {
 	window.setFramerateLimit(60);
-	this->renderState = 2;
+	this->renderState = 1;
 }
 
 void WindowHendler::eventBasicHandler()
@@ -18,7 +18,7 @@ void WindowHendler::eventBasicHandler()
 			break;
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape) {
-				this->set_renderState(2);
+				this->set_renderState(1);
 			}
 			break;
 		}

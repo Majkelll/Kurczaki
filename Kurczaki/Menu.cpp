@@ -34,8 +34,24 @@ void Menu::renderBackground()
 	this->m_window.draw(this->backgroundSprite);
 }
 
-Menu::Menu(sf::RenderWindow& window)
-	:m_window(window)
+void Menu::updateState()
+{
+	for (auto& b : this->buttons) {
+		if (this->buttonHitBox(b.get_position(), this->mousePos)
+			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			if (b.get_name() == "Play") {
+				this->m_windowHandler.set_renderState(2);
+			}
+			if (b.get_name() == "Exit") {
+				m_window.close();
+			}
+		}
+		b.update();
+	}
+}
+
+Menu::Menu(sf::RenderWindow& window, WindowHendler& newWindowHendler)
+	:m_window(window), m_windowHandler(newWindowHendler)
 {
 	this->renderMe = true;
 	this->initVariables();
@@ -49,15 +65,7 @@ bool Menu::get_renderMe()
 void Menu::update()
 {
 	this->mousePos = sf::Mouse::getPosition(this->m_window);
-	this->m_windowHendler.set_renderState(5);
-	for (auto& b : this->buttons) {
-		if (this->buttonHitBox(b.get_position(), this->mousePos)
-			&& b.get_name() == "Play"
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			this->renderMe = false;
-		}
-		b.update();
-	}
+	this->updateState();
 }
 
 void Menu::render()
