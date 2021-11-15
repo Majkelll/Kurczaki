@@ -65,22 +65,20 @@ void Game::updateEggs()
 }
 void Game::updateBullets()
 {
-	std::list<Bullet_v2>::iterator bullet;
-	for (bullet = this->bullets_v2.begin(); bullet != this->bullets_v2.end(); ++bullet) {
-		bullet->update();
-		if (bullet->get_kabum()) {
-			this->bullets_v2.erase(bullet);
+	for (int i = 0; i < this->bullets.size(); i++) {
+		bullets[i]->update();
+		if (bullets[i]->get_kabum()) {
+			this->bullets.erase(this->bullets.begin() + i);
 		}
 	}
 }
 void Game::updateHitBoxBulletsEnemies()
 {
-	std::list<Bullet_v2>::iterator bullet;
-	for (bullet = this->bullets_v2.begin(); bullet != this->bullets_v2.end(); ++bullet) {
+	for (int j = 0; j < this->bullets.size(); j++) {
 		for (int i = 0; i < this->enemies.size(); i++) {
-			if (this->hitbox(bullet->get_position(), this->enemies[i]->get_position(), bullet->get_size(), this->enemies[i]->get_size())) {
-				this->enemies[i]->set_hp(this->enemies[i]->get_hp() - bullet->get_damage());
-				this->bullets_v2.erase(bullet);
+			if (this->hitbox(bullets[j]->get_position(), this->enemies[i]->get_position(), bullets[j]->get_size(), this->enemies[i]->get_size())) {
+				this->enemies[i]->set_hp(this->enemies[i]->get_hp() - bullets[j]->get_damage());
+				this->bullets.erase(this->bullets.begin() + j);
 			}
 		}
 	}
@@ -88,11 +86,10 @@ void Game::updateHitBoxBulletsEnemies()
 void Game::updateShoot()
 {
 	if (player.shoot()) {
-		this->bullets_v2.push_back(Bullet_v2(m_window));
-		this->bullets_v2.back().initVeriables(sf::Vector2f(
+		bullets.emplace_back(std::make_unique<Bullet_v2>(m_window));
+		bullets[bullets.size() - 1]->initVeriables(sf::Vector2f(
 			this->player.get_position().x + this->player.get_size() / 2,
-			this->player.get_position().y
-		));
+			this->player.get_position().y));
 	}
 }
 void Game::updateEnemies()
@@ -191,8 +188,8 @@ void Game::renderEggs()
 
 void Game::renderBullets()
 {
-	for (auto& b : this->bullets_v2) {
-		b.render();
+	for (int i = 0; i < this->bullets.size(); i++) {
+		bullets[i]->render();
 	}
 }
 

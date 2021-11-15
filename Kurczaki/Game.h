@@ -21,10 +21,10 @@ private:
 	sf::Text textScore;
 
 	std::vector<std::unique_ptr<Enemy>> enemies;
+	std::vector<std::unique_ptr<Bullet_v2>>bullets;
 
 	std::list<PowerUp> powerUps;
 	std::list<Egg> eggs;
-	std::list<Bullet_v2> bullets_v2;
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
