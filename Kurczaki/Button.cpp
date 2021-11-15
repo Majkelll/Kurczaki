@@ -2,22 +2,26 @@
 
 void Button::initVariables()
 {
-	this->color = sf::Color(150, 150, 67);
 }
 
 void Button::initShape()
 {
-	this->shape.setSize(this->size);
-	this->shape.setPosition(this->position);
-	this->shape.setFillColor(this->color);
+	if (this->texture == 1) {
+		this->btnTexture.loadFromFile("./assets/buttonPlay.png");
+		this->btnTexture.setSmooth(true);
+		this->sprite.setTexture(this->btnTexture);
+		this->sprite.setTextureRect(sf::IntRect(0, 0, this->size.x, this->size.y));
+		this->sprite.setPosition(this->position);
+	}
 }
 
-Button::Button(sf::Vector2f newPosition, sf::Vector2f newSize, std::string newName, sf::RenderWindow& window)
+Button::Button(sf::Vector2f newPosition, int newTexture, sf::Vector2f newSize, std::string newName, sf::RenderWindow& window)
 	:m_window(window)
 {
 	this->position = newPosition;
 	this->size = newSize;
 	this->name = newName;
+	this->texture = newTexture;
 	this->initVariables();
 	this->initShape();
 }
@@ -39,5 +43,5 @@ void Button::update()
 
 void Button::render()
 {
-	this->m_window.draw(this->shape);
+	this->m_window.draw(this->sprite);
 }

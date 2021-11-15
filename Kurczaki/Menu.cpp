@@ -12,8 +12,8 @@ void Menu::initVariables()
 	this->backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1280, 720));
 	this->backgroundSprite.setPosition(0, 0);
 
-	this->buttons.push_back(Button(this->buttonPosition, this->buttonSize, "Play", this->m_window));
-	this->buttons.push_back(Button(sf::Vector2f(this->buttonPosition.x, this->buttonPosition.y + 120), this->buttonSize, "Exit", this->m_window));
+	this->buttons.push_back(Button(this->buttonPosition, 1, this->buttonSize, "Play", this->m_window));
+	this->buttons.push_back(Button(sf::Vector2f(this->buttonPosition.x, this->buttonPosition.y + 120), 2, this->buttonSize, "Exit", this->m_window));
 }
 
 bool Menu::buttonHitBox(sf::Vector2f buttonPos, sf::Vector2i mousePos)
