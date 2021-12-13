@@ -33,9 +33,13 @@ int main() {
 			deathScreen.update();
 			deathScreen.render();
 		}
+		else if (windowHandler.get_renderState() == 4) {
+			break;
+		}
 		else {
 			std::cout << "Can't handle render state";
 		}
 	}
+
 	return 0;
 }
