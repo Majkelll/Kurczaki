@@ -6,13 +6,11 @@ void Button::initVariables()
 
 void Button::initShape()
 {
-	if (this->texture == 1) {
-		this->btnTexture.loadFromFile("./assets/buttonPlay.png");
-		this->btnTexture.setSmooth(true);
-		this->sprite.setTexture(this->btnTexture);
-		this->sprite.setTextureRect(sf::IntRect(0, 0, this->size.x, this->size.y));
-		this->sprite.setPosition(this->position);
-	}
+
+	this->btnTexture.loadFromFile("./assets/buttonExit.png");
+	this->sprite.setTexture(this->btnTexture);
+	this->sprite.setTextureRect(sf::IntRect(0, 0, this->size.x, this->size.y));
+	this->sprite.setPosition(this->position);
 }
 
 Button::Button(sf::Vector2f newPosition, int newTexture, sf::Vector2f newSize, std::string newName, sf::RenderWindow& window)

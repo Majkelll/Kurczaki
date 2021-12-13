@@ -74,9 +74,5 @@ void Menu::render()
 
 	this->renderBackground();
 
-	for (auto& b : this->buttons) {
-		b.render();
-	}
-
 	m_window.display();
 }

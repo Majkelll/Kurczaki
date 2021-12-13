@@ -22,9 +22,12 @@ int main() {
 			menu.render();
 
 		}
-		else {
+		else if (windowHandler.get_renderState() == 2) {
 			game.update();
 			game.render();
+		}
+		else if (windowHandler.get_renderState() == 3) {
+
 		}
 	}
 	return 0;
