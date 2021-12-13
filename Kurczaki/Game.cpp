@@ -29,8 +29,8 @@ void Game::updateLvl()
 	}
 }
 
-Game::Game(sf::RenderWindow& window)
-	:m_window(window), player(window)
+Game::Game(sf::RenderWindow& window, WindowHendler& newWindowHandler)
+	:m_window(window), player(window), m_windowHandler(newWindowHandler)
 {
 	this->initVeriables();
 	this->generateLvl(this->currLvl);
@@ -111,6 +111,8 @@ void Game::updateEnemies()
 }
 void Game::update()
 {
+	this->m_windowHandler.set_score(this->player.get_points());
+	this->stateHandler();
 	this->updateShoot();
 	this->player.update();
 	this->updateText();
@@ -153,6 +155,13 @@ void Game::generatePowerUps(sf::Vector2f pos)
 {
 	this->powerUps.push_back(PowerUp(m_window));
 	powerUps.back().initVeriables(pos);
+}
+
+void Game::stateHandler()
+{
+	if (player.get_hp() <= 0) {
+		this->m_windowHandler.set_renderState(3);
+	}
 }
 
 void Game::renderPowerUps()

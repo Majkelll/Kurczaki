@@ -53,13 +53,7 @@ void Menu::updateState()
 Menu::Menu(sf::RenderWindow& window, WindowHendler& newWindowHendler)
 	:m_window(window), m_windowHandler(newWindowHendler)
 {
-	this->renderMe = true;
 	this->initVariables();
-}
-
-bool Menu::get_renderMe()
-{
-	return this->renderMe;
 }
 
 void Menu::update()

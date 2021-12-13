@@ -17,6 +17,7 @@ class Game
 {
 private:
 	sf::RenderWindow& m_window;
+	WindowHendler& m_windowHandler;
 	Player player;
 	sf::Text textScore;
 
@@ -38,6 +39,7 @@ private:
 	void initTextScore();
 	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2);
 	void generatePowerUps(sf::Vector2f pos);
+	void stateHandler();
 
 	void renderPowerUps();
 	void renderEnemies();
@@ -56,7 +58,7 @@ private:
 	void updateBullets();
 
 public:
-	Game(sf::RenderWindow& window);
+	Game(sf::RenderWindow& window, WindowHendler& newWindowHandler);
 	void update();
 	void render();
 };

@@ -4,7 +4,7 @@ void Player::initVeriables()
 {
 	this->position.x = 1280 / 2 - 50;
 	this->position.y = 720 - 150;
-	this->hp = 3;
+	this->hp = 1;
 	this->points = 0;
 	this->speed = 5.f;
 	this->size = 100;

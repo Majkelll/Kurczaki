@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "WindowHendler.h"
 #include "Menu.h"
+#include "DeathScreen.h"
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -13,7 +14,9 @@ int main() {
 	window.setFramerateLimit(60);
 	WindowHendler windowHandler(window);
 	Menu menu(window, windowHandler);
-	Game game(window);
+	Game game(window, windowHandler);
+	DeathScreen deathScreen(window, windowHandler);
+
 	while (window.isOpen())
 	{
 		windowHandler.eventBasicHandler();
@@ -27,7 +30,11 @@ int main() {
 			game.render();
 		}
 		else if (windowHandler.get_renderState() == 3) {
-
+			deathScreen.update();
+			deathScreen.render();
+		}
+		else {
+			std::cout << "Can't handle render state";
 		}
 	}
 	return 0;

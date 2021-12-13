@@ -25,6 +25,11 @@ void WindowHendler::eventBasicHandler()
 	}
 }
 
+void WindowHendler::set_score(int newScore)
+{
+	this->score = newScore;
+}
+
 void WindowHendler::set_renderState(int newRenderState)
 {
 	this->renderState = newRenderState;
@@ -33,4 +38,9 @@ void WindowHendler::set_renderState(int newRenderState)
 int WindowHendler::get_renderState()
 {
 	return this->renderState;
+}
+
+int WindowHendler::get_score()
+{
+	return this->score;
 }

@@ -10,28 +10,25 @@
 #include <list>
 #include "WindowHendler.h"
 
-class Menu
+class DeathScreen
 {
 private:
 	sf::RenderWindow& m_window;
 	WindowHendler& m_windowHandler;
 
-	sf::Texture backgroundTexture;
-	sf::Sprite backgroundSprite;
+	sf::Texture loseTexture;
+	sf::Sprite loseSprite;
 
-	sf::Vector2f buttonSize;
-	sf::Vector2f buttonPosition;
-	sf::Vector2i mousePos;
-
-	std::list<Button> buttons;
+	sf::Font font;
+	sf::Text textScore;
 
 	void initVariables();
-	bool buttonHitBox(sf::Vector2f buttonPos, sf::Vector2i mousePos);
-	void renderBackground();
-	void updateState();
+	void initText();
 
+	void renderScore();
+	void renderBackground();
 public:
-	Menu(sf::RenderWindow& window, WindowHendler& newWindowHendler);
+	DeathScreen(sf::RenderWindow& window, WindowHendler& newWindowHandler);
 	void update();
 	void render();
 };
