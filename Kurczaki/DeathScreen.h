@@ -9,6 +9,7 @@
 #include "Button.h"
 #include <list>
 #include "WindowHendler.h"
+#include "Button.h"
 
 class DeathScreen
 {
@@ -22,8 +23,16 @@ private:
 	sf::Font font;
 	sf::Text textScore;
 
+	sf::Vector2f buttonSize;
+	sf::Vector2f buttonPosition;
+	sf::Vector2i mousePos;
+
+	std::list<Button> buttons;
+
 	void initVariables();
 	void initText();
+	void updateState();
+	bool buttonHitBox(sf::Vector2f buttonPos, sf::Vector2i mousePos);
 
 	void renderScore();
 	void renderBackground();

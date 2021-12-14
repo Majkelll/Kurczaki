@@ -6,10 +6,9 @@ void Button::initVariables()
 
 void Button::initShape()
 {
-
 	this->btnTexture.loadFromFile("./assets/buttonExit.png");
+	this->sprite.setTextureRect(sf::IntRect(0, 0,500, 100));
 	this->sprite.setTexture(this->btnTexture);
-	this->sprite.setTextureRect(sf::IntRect(0, 0, this->size.x, this->size.y));
 	this->sprite.setPosition(this->position);
 }
 
