@@ -82,9 +82,6 @@ void DeathScreen::render()
 
 	this->renderBackground();
 	this->renderScore();
-	for (auto& b : this->buttons) {
-		b.render();
-	}
 
 	m_window.display();
 }

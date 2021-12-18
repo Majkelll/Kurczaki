@@ -10,7 +10,7 @@
 #include <SFML/Audio.hpp>
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kurczaki v.0");
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kurczaki v.0.1");
 	window.setFramerateLimit(60);
 	WindowHendler windowHandler(window);
 	Menu menu(window, windowHandler);
