@@ -1,20 +1,20 @@
 #include "Egg.h"
 
-int Egg::get_damage()
+int egg::get_damage() const
 {
-	return this->damage;
+	return this->damage_;
 }
 
-void Egg::initVeriables(sf::Vector2f newPos)
+void egg::init_variables(const sf::Vector2f new_pos)
 {
 	this->set_speed(-5);
 	this->set_damage(1);
 	this->set_size(40);
-	this->set_position(newPos);
+	this->set_position(new_pos);
 
-	sf::Texture tempTexture;
-	tempTexture.loadFromFile("./assets/egg.png");
-	tempTexture.setSmooth(true);
-	this->set_texture(tempTexture);
-	this->initSprite(sf::IntRect(0, 0, 40, 40));
+	sf::Texture temp_texture;
+	temp_texture.loadFromFile("./assets/egg.png");
+	temp_texture.setSmooth(true);
+	this->set_texture(temp_texture);
+	this->init_sprite(sf::IntRect(0, 0, 40, 40));
 }

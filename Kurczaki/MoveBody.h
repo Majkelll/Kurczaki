@@ -1,40 +1,36 @@
 #pragma once
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 
-class MoveBody
+class move_body
 {
-	sf::RenderWindow& m_window;
+	sf::RenderWindow& m_window_;
 
-	sf::Vector2f position;
-	sf::Texture texture;
-	sf::Sprite sprite;
+	sf::Vector2f position_;
+	sf::Texture texture_;
+	sf::Sprite sprite_;
 
-	int speed;
-	int damage;
-	int size;
-	bool kabum;
+	int speed_;
+	int damage_;
+	int size_;
+	bool to_destruction_;
 
 public:
-	explicit MoveBody(sf::RenderWindow& window);
+	explicit move_body(sf::RenderWindow& window);
 	sf::Vector2f get_position() const;
 	int get_speed() const;
 	int get_damage() const;
 	int get_size() const;
-	bool get_kabum() const;
+	bool get_to_destruction() const;
 
-	void set_speed(int newSpeed);
-	void set_damage(int newDamage);
-	void set_size(int newSize);
-	void set_texture(sf::Texture newTexture);
-	void set_kabum();
-	void set_position(sf::Vector2f newPos);
+	void set_speed(int new_speed);
+	void set_damage(int new_damage);
+	void set_size(int new_size);
+	void set_texture(sf::Texture new_texture);
+	void set_to_destruction();
+	void set_position(sf::Vector2f new_pos);
 
-	void initSprite(sf::IntRect texturePos);
+	void init_sprite(sf::IntRect texture_pos);
 	virtual void update();
 	virtual void render();
 };

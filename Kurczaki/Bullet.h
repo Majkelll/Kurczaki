@@ -1,11 +1,9 @@
 #pragma once
 #include "MoveBody.h"
-class Bullet_v2 : public MoveBody
+
+class bullet final : public move_body
 {
-private:
-
 public:
-	void initVeriables(sf::Vector2f newPosition);
-	using MoveBody::MoveBody;
+	void init_variables(sf::Vector2f new_position);
+	using move_body::move_body;
 };
-

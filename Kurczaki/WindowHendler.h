@@ -5,19 +5,20 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
-class WindowHendler
+
+class window_handler
 {
 private:
-	sf::RenderWindow& m_window;
-	int renderState;
-	int score;
+	sf::RenderWindow& m_window_;
+	int render_state_;
+	int score_;
 public:
-	WindowHendler(sf::RenderWindow& window);
-	void eventBasicHandler();
+	explicit window_handler(sf::RenderWindow& window);
+	void event_basic_handler();
 
-	void set_score(int newScore);
-	void set_renderState(int newRenderState);
+	void set_score(int new_score);
+	void set_render_state(int new_render_state);
 
-	int get_renderState();
-	int get_score();
+	int get_renderState() const;
+	int get_score() const;
 };

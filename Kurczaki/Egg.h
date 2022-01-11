@@ -1,11 +1,12 @@
 #pragma once
 #include "MoveBody.h"
-class Egg : public MoveBody
+
+class egg final : public move_body
 {
 private:
-	int damage;
+	int damage_;
 public:
-	int get_damage();
-	void initVeriables(sf::Vector2f newPos);
-	using MoveBody::MoveBody;
+	int get_damage() const;
+	void init_variables(sf::Vector2f new_pos);
+	using move_body::move_body;
 };

@@ -1,65 +1,59 @@
 #pragma once
-#include "Bullet.h"
 
-#include <iostream>
-#include <list>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 
-class Player
+class player
 {
 private:
-	sf::Vector2f position;
-	sf::Texture texture;
-	sf::Sprite sprite;
-	sf::Texture shieldTexture;
-	sf::Sprite shieldSprite;
-	sf::RenderWindow& m_window;
+	sf::Vector2f position_;
+	sf::Texture texture_;
+	sf::Sprite sprite_;
+	sf::Texture shield_texture_;
+	sf::Sprite shield_sprite_;
+	sf::RenderWindow& m_window_;
 
-	int hp;
-	int points;
-	float speed;
-	float shootSpeed;
-	int size;
-	int weaponLvl;
-	int speedLvl;
-	int shootLvl;
-	int shootTimer;
+	int hp_;
+	int points_;
+	float speed_;
+	float shoot_speed_;
+	int size_;
+	int weapon_lvl_;
+	int speed_lvl_;
+	int shoot_lvl_;
+	int shoot_timer_;
 
-	int godModeTimer;
-	bool godMode;
+	int god_mode_timer_;
+	bool god_mode_;
 
-	sf::Texture hpTexture;
+	sf::Texture hp_texture_;
 
-	std::vector <sf::Sprite> hpSprites;
+	std::vector<sf::Sprite> hp_sprites_;
 
-	void initVeriables();
-	void initShape();
-	void moveColider();
+	void init_variables();
+	void init_shape();
+	void move_collider();
 	void move();
-	void hpRender();
-	void hpUpdate();
+	void hp_render() const;
+	void hp_update();
 
 public:
-	Player(sf::RenderWindow& window);
+	explicit player(sf::RenderWindow& window);
 
-	sf::Vector2f get_position();
-	int get_size();
-	int get_points();
-	int get_hp();
-	bool get_godMode();
-	float get_shootSpeed();
-	float get_speed();
+	sf::Vector2f get_position() const;
+	int get_size() const;
+	int get_points() const;
+	int get_hp() const;
+	bool get_god_mode() const;
+	float get_shoot_speed() const;
+	float get_speed() const;
 
-	void on_godMode();
-	void set_points(int newPoints);
-	void set_hp(int newHp);
-	void set_shootSpeed(float newSpeed);
-	void set_speed(float newSpeed);
+	void on_god_mode();
+	void set_points(int new_points);
+	void set_hp(int new_hp);
+	void set_shoot_speed(float new_speed);
+	void set_speed(float new_speed);
 
 	bool shoot();
 	void update();
-	void render();
+	void render() const;
 };

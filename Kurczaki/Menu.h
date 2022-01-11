@@ -1,38 +1,32 @@
 #pragma once
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 #include "WindowHendler.h"
 #include "Button.h"
 #include <list>
-#include "WindowHendler.h"
 
-class Menu
+class menu
 {
 private:
-	sf::RenderWindow& m_window;
-	WindowHendler& m_windowHandler;
+	sf::RenderWindow& m_window_;
+	window_handler& m_window_handler_;
 
-	sf::Texture backgroundTexture;
-	sf::Sprite backgroundSprite;
+	sf::Texture background_texture_;
+	sf::Sprite background_sprite_;
 
-	sf::Vector2f buttonSize;
-	sf::Vector2f buttonPosition;
-	sf::Vector2i mousePos;
+	sf::Vector2f button_size_;
+	sf::Vector2f button_position_;
+	sf::Vector2i mouse_pos_;
 
-	std::list<Button> buttons;
+	std::list<button> buttons_;
 
-	void initVariables();
-	bool buttonHitBox(sf::Vector2f buttonPos, sf::Vector2i mousePos);
-	void renderBackground();
-	void updateState();
+	void init_variables();
+	bool button_hit_box(sf::Vector2f button_pos, sf::Vector2i mouse_pos) const;
+	void render_background() const;
+	void update_state();
 
 public:
-	Menu(sf::RenderWindow& window, WindowHendler& newWindowHendler);
+	menu(sf::RenderWindow& window, window_handler& new_window_handler);
 	void update();
-	void render();
+	void render() const;
 };
-

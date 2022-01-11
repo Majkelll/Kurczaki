@@ -1,83 +1,83 @@
 #include "MoveBody.h"
 
-MoveBody::MoveBody(sf::RenderWindow& window)
-	:m_window(window)
+move_body::move_body(sf::RenderWindow& window)
+	: m_window_(window), to_destruction_(false)
 {
-	this->kabum = false;
 }
 
-sf::Vector2f MoveBody::get_position() const
+sf::Vector2f move_body::get_position() const
 {
-	return this->position;
+	return this->position_;
 }
 
-int MoveBody::get_speed() const
+int move_body::get_speed() const
 {
-	return this->speed;
+	return this->speed_;
 }
 
-int MoveBody::get_damage() const
+int move_body::get_damage() const
 {
-	return this->damage;
+	return this->damage_;
 }
 
-int MoveBody::get_size() const
+int move_body::get_size() const
 {
-	return this->size;
+	return this->size_;
 }
 
-bool MoveBody::get_kabum() const
+bool move_body::get_to_destruction() const
 {
-	return this->kabum;
+	return this->to_destruction_;
 }
 
-void MoveBody::set_speed(int newSpeed)
+void move_body::set_speed(const int new_speed)
 {
-	this->speed = newSpeed;
+	this->speed_ = new_speed;
 }
 
-void MoveBody::set_damage(int newDamage)
+void move_body::set_damage(const int new_damage)
 {
-	this->damage = newDamage;
+	this->damage_ = new_damage;
 }
 
-void MoveBody::set_size(int newSize)
+void move_body::set_size(const int new_size)
 {
-	this->size = newSize;
+	this->size_ = new_size;
 }
 
-void MoveBody::set_texture(sf::Texture newTexture)
+void move_body::set_texture(const sf::Texture new_texture)
 {
-	this->texture = newTexture;
+	this->texture_ = new_texture;
 }
 
-void MoveBody::initSprite(sf::IntRect texturePos)
+void move_body::init_sprite(const sf::IntRect texture_pos)
 {
-	this->sprite.setTexture(this->texture);
-	this->sprite.setTextureRect(texturePos);
+	this->sprite_.setTexture(this->texture_);
+	this->sprite_.setTextureRect(texture_pos);
 }
 
-void MoveBody::set_kabum()
+void move_body::set_to_destruction()
 {
-	this->kabum = true;
+	this->to_destruction_ = true;
 }
 
-void MoveBody::set_position(sf::Vector2f newPos)
+void move_body::set_position(const sf::Vector2f new_pos)
 {
-	this->position = newPos;
+	this->position_ = new_pos;
 }
 
-void MoveBody::update()
+void move_body::update()
 {
-	this->position.y -= this->speed;
-	if (this->position.y > m_window.getSize().y
-		|| this->position.y < 0) {
-		this->set_kabum();
+	this->position_.y -= this->speed_;
+	if (this->position_.y > m_window_.getSize().y
+		|| this->position_.y < 0)
+	{
+		this->set_to_destruction();
 	}
 }
 
-void MoveBody::render()
+void move_body::render()
 {
-	this->sprite.setPosition(this->position);
-	m_window.draw(this->sprite);
+	this->sprite_.setPosition(this->position_);
+	m_window_.draw(this->sprite_);
 }

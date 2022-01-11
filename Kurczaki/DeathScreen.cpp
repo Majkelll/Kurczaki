@@ -1,87 +1,93 @@
 #include "DeathScreen.h"
 
-void DeathScreen::initVariables()
+void death_screen::init_variables()
 {
-	this->buttonSize = sf::Vector2f(500, 100);
-	this->buttonPosition = sf::Vector2f(1280 / 2 - this->buttonSize.x / 2, 300);
+	this->button_size_ = sf::Vector2f(500, 100);
+	this->button_position_ = sf::Vector2f(1280 / 2 - this->button_size_.x / 2, 300);
 
-	this->loseTexture.loadFromFile("./assets/lose.png");
-	this->loseTexture.setSmooth(true);
+	this->lose_texture_.loadFromFile("./assets/lose.png");
+	this->lose_texture_.setSmooth(true);
 
-	this->loseSprite.setTexture(this->loseTexture);
-	this->loseSprite.setTextureRect(sf::IntRect(0, 0, 1280, 720));
-	this->loseSprite.setPosition(0, 0);
+	this->lose_sprite_.setTexture(this->lose_texture_);
+	this->lose_sprite_.setTextureRect(sf::IntRect(0, 0, 1280, 720));
+	this->lose_sprite_.setPosition(0, 0);
 
-	this->buttons.push_back(Button(sf::Vector2f(this->buttonPosition.x, this->buttonPosition.y + 240), 2, this->buttonSize, "Exit", this->m_window));
+	this->buttons_.emplace_back(sf::Vector2f(this->button_position_.x, this->button_position_.y + 240), 2,
+	                            this->button_size_, "Exit", this->m_window_);
 }
 
-void DeathScreen::renderScore()
+void death_screen::render_score()
 {
-	this->textScore.setString("Score: " + std::to_string(this->m_windowHandler.get_score()));
-	m_window.draw(this->textScore);
+	this->text_score_.setString("Score: " + std::to_string(this->m_window_handler_.get_score()));
+	m_window_.draw(this->text_score_);
 }
 
-void DeathScreen::renderBackground()
+void death_screen::render_background() const
 {
-	this->m_window.draw(this->loseSprite);
+	this->m_window_.draw(this->lose_sprite_);
 }
 
-void DeathScreen::initText()
+void death_screen::init_text()
 {
-	this->font.loadFromFile("./assets/font.ttf");
-	this->textScore.setFont(this->font);
-	this->textScore.setString("Score: 0");
-	this->textScore.setCharacterSize(80);
-	this->textScore.setOrigin(-500, -300);
+	this->font_.loadFromFile("./assets/font.ttf");
+	this->text_score_.setFont(this->font_);
+	this->text_score_.setString("Score: 0");
+	this->text_score_.setCharacterSize(80);
+	this->text_score_.setOrigin(-500, -300);
 }
 
-void DeathScreen::updateState()
+void death_screen::update_state()
 {
-	for (auto& b : this->buttons) {
-		if (this->buttonHitBox(b.get_position(), this->mousePos)
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			if (b.get_name() == "Play") {
-				this->m_windowHandler.set_renderState(2);
+	for (auto& b : this->buttons_)
+	{
+		if (this->button_hit_box(b.get_position(), this->mouse_pos_)
+			&& sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (b.get_name() == "Play")
+			{
+				this->m_window_handler_.set_render_state(2);
 			}
-			if (b.get_name() == "Exit") {
-				m_window.close();
+			if (b.get_name() == "Exit")
+			{
+				m_window_.close();
 			}
 		}
-		b.update();
+		button::update();
 	}
 }
 
-bool DeathScreen::buttonHitBox(sf::Vector2f buttonPos, sf::Vector2i mousePos)
+bool death_screen::button_hit_box(const sf::Vector2f button_pos, const sf::Vector2i mouse_pos) const
 {
 	int size2 = 1;
-	if (buttonPos.x < mousePos.x + 1 &&
-		buttonPos.x + this->buttonSize.x > mousePos.x &&
-		buttonPos.y < mousePos.y + 1 &&
-		this->buttonSize.y + buttonPos.y > mousePos.y) {
+	if (button_pos.x < mouse_pos.x + 1 &&
+		button_pos.x + this->button_size_.x > mouse_pos.x &&
+		button_pos.y < mouse_pos.y + 1 &&
+		this->button_size_.y + button_pos.y > mouse_pos.y)
+	{
 		return true;
 	}
 	return false;
 }
 
-DeathScreen::DeathScreen(sf::RenderWindow& window, WindowHendler& newWindowHandler)
-	:m_window(window), m_windowHandler(newWindowHandler)
+death_screen::death_screen(sf::RenderWindow& window, window_handler& new_window_handler)
+	: m_window_(window), m_window_handler_(new_window_handler)
 {
-	this->initVariables();
-	this->initText();
+	this->init_variables();
+	this->init_text();
 }
 
-void DeathScreen::update()
+void death_screen::update()
 {
-	this->mousePos = sf::Mouse::getPosition(this->m_window);
-	this->updateState();
+	this->mouse_pos_ = sf::Mouse::getPosition(this->m_window_);
+	this->update_state();
 }
 
-void DeathScreen::render()
+void death_screen::render()
 {
-	m_window.clear();
+	m_window_.clear();
 
-	this->renderBackground();
-	this->renderScore();
+	this->render_background();
+	this->render_score();
 
-	m_window.display();
+	m_window_.display();
 }

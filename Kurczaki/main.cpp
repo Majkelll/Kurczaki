@@ -6,37 +6,40 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 
-int main() {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kurczaki v.0.1");
+int main()
+{
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Kurczaki v.5.2");
 	window.setFramerateLimit(60);
-	WindowHendler windowHandler(window);
-	Menu menu(window, windowHandler);
-	Game game(window, windowHandler);
-	DeathScreen deathScreen(window, windowHandler);
+	window_handler window_handler(window);
+	menu menu(window, window_handler);
+	game game(window, window_handler);
+	death_screen death_screen(window, window_handler);
 
 	while (window.isOpen())
 	{
-		windowHandler.eventBasicHandler();
-		if (windowHandler.get_renderState() == 1) {
+		window_handler.event_basic_handler();
+		if (window_handler.get_renderState() == 1)
+		{
 			menu.update();
 			menu.render();
-
 		}
-		else if (windowHandler.get_renderState() == 2) {
+		else if (window_handler.get_renderState() == 2)
+		{
 			game.update();
 			game.render();
 		}
-		else if (windowHandler.get_renderState() == 3) {
-			deathScreen.update();
-			deathScreen.render();
+		else if (window_handler.get_renderState() == 3)
+		{
+			death_screen.update();
+			death_screen.render();
 		}
-		else if (windowHandler.get_renderState() == 4) {
+		else if (window_handler.get_renderState() == 4)
+		{
 			break;
 		}
-		else {
+		else
+		{
 			std::cout << "Can't handle render state";
 		}
 	}

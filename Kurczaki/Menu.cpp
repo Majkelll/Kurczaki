@@ -1,72 +1,76 @@
 #include "Menu.h"
 
-void Menu::initVariables()
+void menu::init_variables()
 {
-	this->buttonSize = sf::Vector2f(500, 100);
-	this->buttonPosition = sf::Vector2f(1280 / 2 - this->buttonSize.x / 2, 300);
+	this->button_size_ = sf::Vector2f(500, 100);
+	this->button_position_ = sf::Vector2f(1280 / 2 - this->button_size_.x / 2, 300);
 
-	this->backgroundTexture.loadFromFile("./assets/menu.png");
-	this->backgroundTexture.setSmooth(true);
+	this->background_texture_.loadFromFile("./assets/menu.png");
+	this->background_texture_.setSmooth(true);
 
-	this->backgroundSprite.setTexture(this->backgroundTexture);
-	this->backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1280, 720));
-	this->backgroundSprite.setPosition(0, 0);
+	this->background_sprite_.setTexture(this->background_texture_);
+	this->background_sprite_.setTextureRect(sf::IntRect(0, 0, 1280, 720));
+	this->background_sprite_.setPosition(0, 0);
 
-	this->buttons.push_back(Button(this->buttonPosition, 1, this->buttonSize, "Play", this->m_window));
-	this->buttons.push_back(Button(sf::Vector2f(this->buttonPosition.x, this->buttonPosition.y + 120), 2, this->buttonSize, "Exit", this->m_window));
+	this->buttons_.emplace_back(this->button_position_, 1, this->button_size_, "Play", this->m_window_);
+	this->buttons_.emplace_back(sf::Vector2f(this->button_position_.x, this->button_position_.y + 120), 2,
+	                            this->button_size_, "Exit", this->m_window_);
 }
 
-bool Menu::buttonHitBox(sf::Vector2f buttonPos, sf::Vector2i mousePos)
+bool menu::button_hit_box(sf::Vector2f button_pos, const sf::Vector2i mouse_pos) const
 {
 	int size2 = 1;
-	if (buttonPos.x < mousePos.x + 1 &&
-		buttonPos.x + this->buttonSize.x > mousePos.x &&
-		buttonPos.y < mousePos.y + 1 &&
-		this->buttonSize.y + buttonPos.y > mousePos.y) {
+	if (button_pos.x < mouse_pos.x + 1 &&
+		button_pos.x + this->button_size_.x > mouse_pos.x &&
+		button_pos.y < mouse_pos.y + 1 &&
+		this->button_size_.y + button_pos.y > mouse_pos.y)
+	{
 		return true;
 	}
 	return false;
-
 }
 
-void Menu::renderBackground()
+void menu::render_background() const
 {
-	this->m_window.draw(this->backgroundSprite);
+	this->m_window_.draw(this->background_sprite_);
 }
 
-void Menu::updateState()
+void menu::update_state()
 {
-	for (auto& b : this->buttons) {
-		if (this->buttonHitBox(b.get_position(), this->mousePos)
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			if (b.get_name() == "Play") {
-				this->m_windowHandler.set_renderState(2);
+	for (auto& b : this->buttons_)
+	{
+		if (this->button_hit_box(b.get_position(), this->mouse_pos_)
+			&& sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (b.get_name() == "Play")
+			{
+				this->m_window_handler_.set_render_state(2);
 			}
-			if (b.get_name() == "Exit") {
-				m_window.close();
+			if (b.get_name() == "Exit")
+			{
+				m_window_.close();
 			}
 		}
-		b.update();
 	}
 }
 
-Menu::Menu(sf::RenderWindow& window, WindowHendler& newWindowHendler)
-	:m_window(window), m_windowHandler(newWindowHendler)
+menu::menu(sf::RenderWindow& window, window_handler& new_window_handler)
+	: m_window_(window), m_window_handler_(new_window_handler)
 {
-	this->initVariables();
+	this->init_variables();
 }
 
-void Menu::update()
+void menu::update()
 {
-	this->mousePos = sf::Mouse::getPosition(this->m_window);
-	this->updateState();
+	this->mouse_pos_ = sf::Mouse::getPosition(this->m_window_);
+	this->update_state();
 }
 
-void Menu::render()
+void menu::render() const
 {
-	m_window.clear();
+	m_window_.clear();
 
-	this->renderBackground();
+	this->render_background();
 
-	m_window.display();
+	m_window_.display();
 }

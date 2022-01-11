@@ -1,66 +1,64 @@
 #include "Enemy.h"
 
-void Enemy::initVeriables()
+void enemy::init_variables()
 {
-	this->coins = 5;
-	this->damage = 1;
-	this->hp = 5;
-	this->size = 100;
-	this->texture.loadFromFile("./assets/chicken-1.png");
-	this->texture.setSmooth(true);
+	this->coins_ = 5;
+	this->damage_ = 1;
+	this->hp_ = 5;
+	this->size_ = 100;
+	this->texture_.loadFromFile("./assets/chicken-1.png");
+	this->texture_.setSmooth(true);
 }
 
-void Enemy::initShape()
+void enemy::init_shape()
 {
-	this->sprite.setTexture(this->texture);
-	this->sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+	this->sprite_.setTexture(this->texture_);
+	this->sprite_.setTextureRect(sf::IntRect(0, 0, 100, 100));
 }
 
-Enemy::Enemy(sf::Vector2f pos, sf::RenderWindow& window)
-	:m_window(window)
+enemy::enemy(const sf::Vector2f pos, sf::RenderWindow& window)
+	: m_window_(window), position_(pos)
 {
-	this->position = pos;
-	this->initVeriables();
-	this->initShape();
+	this->init_variables();
+	this->init_shape();
 }
 
-sf::Vector2f Enemy::get_position()
+sf::Vector2f enemy::get_position() const
 {
-	return this->position;
+	return this->position_;
 }
 
-int Enemy::get_size()
+int enemy::get_size() const
 {
-	return this->size;
+	return this->size_;
 }
 
-int Enemy::get_hp()
+int enemy::get_hp() const
 {
-	return this->hp;
+	return this->hp_;
 }
 
-int Enemy::get_coins()
+int enemy::get_coins() const
 {
-	return this->coins;
+	return this->coins_;
 }
 
-void Enemy::set_hp(int newHp)
+void enemy::set_hp(int new_hp)
 {
-	this->hp = newHp;
+	this->hp_ = new_hp;
 }
 
-bool Enemy::del_obj()
+bool enemy::del_obj()
 {
 	return false;
 }
 
-void Enemy::update()
+void enemy::update()
 {
-
 }
 
-void Enemy::render()
+void enemy::render()
 {
-	this->sprite.setPosition(this->position);
-	m_window.draw(this->sprite);
+	this->sprite_.setPosition(this->position_);
+	m_window_.draw(this->sprite_);
 }

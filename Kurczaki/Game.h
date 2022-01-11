@@ -1,10 +1,7 @@
 #pragma once
 
-#include <iostream>
+#include <list>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -13,52 +10,52 @@
 #include "WindowHendler.h"
 #include "Bullet.h"
 
-class Game
+class game
 {
 private:
-	sf::RenderWindow& m_window;
-	WindowHendler& m_windowHandler;
-	Player player;
-	sf::Text textScore;
+	sf::RenderWindow& m_window_;
+	window_handler& m_window_handler_;
+	player player_;
+	sf::Text text_score_;
 
-	std::vector<std::unique_ptr<Enemy>> enemies;
-	std::vector<std::unique_ptr<Bullet_v2>>bullets;
+	std::vector<std::unique_ptr<enemy>> enemies_;
+	std::vector<std::unique_ptr<bullet>> bullets_;
 
-	std::list<PowerUp> powerUps;
-	std::list<Egg> eggs;
+	std::list<power_up> power_ups_;
+	std::list<egg> eggs_;
 
-	sf::Texture backgroundTexture;
-	sf::Sprite backgroundSprite;
+	sf::Texture background_texture_;
+	sf::Sprite background_sprite_;
 
-	sf::Font font;
+	sf::Font font_;
 
-	int currLvl;
+	int current_lvl_;
 
-	void initVeriables();
-	void generateLvl(int level);
-	void initTextScore();
-	bool hitbox(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2);
-	void generatePowerUps(sf::Vector2f pos);
-	void stateHandler();
+	void init_variables();
+	void generate_lvl(int level);
+	void init_text_score();
+	static bool collider(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2);
+	void generate_power_ups(sf::Vector2f pos);
+	void state_handler();
 
-	void renderPowerUps();
-	void renderEnemies();
-	void renderBackground();
-	void renderScore();
-	void renderEggs();
-	void renderBullets();
+	void render_power_ups();
+	void render_enemies() const;
+	void render_background() const;
+	void render_score() const;
+	void render_eggs();
+	void render_bullets() const;
 
-	void updateHitBoxBulletsEnemies();
-	void updateShoot();
-	void updateEnemies();
-	void updateLvl();
-	void updatePowerUps();
-	void updateText();
-	void updateEggs();
-	void updateBullets();
+	void update_hit_box_bullets_enemies();
+	void update_shoot();
+	void update_enemies();
+	void update_lvl();
+	void update_power_ups();
+	void update_text();
+	void update_eggs();
+	void update_bullets();
 
 public:
-	Game(sf::RenderWindow& window, WindowHendler& newWindowHandler);
+	game(sf::RenderWindow& window, window_handler& new_window_handler);
 	void update();
 	void render();
 };

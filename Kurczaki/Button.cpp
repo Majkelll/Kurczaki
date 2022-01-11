@@ -1,44 +1,42 @@
 #include "Button.h"
 
-void Button::initVariables()
+void button::init_variables()
 {
 }
 
-void Button::initShape()
+void button::init_shape()
 {
-	this->btnTexture.loadFromFile("./assets/buttonExit.png");
-	this->sprite.setTextureRect(sf::IntRect(0, 0,500, 100));
-	this->sprite.setTexture(this->btnTexture);
-	this->sprite.setPosition(this->position);
+	this->btn_texture_.loadFromFile("./assets/buttonExit.png");
+	this->sprite_.setTextureRect(sf::IntRect(0, 0, 500, 100));
+	this->sprite_.setTexture(this->btn_texture_);
+	this->sprite_.setPosition(this->position_);
 }
 
-Button::Button(sf::Vector2f newPosition, int newTexture, sf::Vector2f newSize, std::string newName, sf::RenderWindow& window)
-	:m_window(window)
+button::button(const sf::Vector2f new_position, const int new_texture, const sf::Vector2f new_size,
+               const std::string new_name,
+               sf::RenderWindow& window)
+	: position_(new_position), size_(new_size), m_window_(window), name_(new_name), texture_(new_texture)
 {
-	this->position = newPosition;
-	this->size = newSize;
-	this->name = newName;
-	this->texture = newTexture;
-	this->initVariables();
-	this->initShape();
+	this->init_variables();
+	this->init_shape();
 }
 
-sf::Vector2f Button::get_position()
+sf::Vector2f button::get_position() const
 {
-	return this->position;
+	return this->position_;
 }
 
-std::string Button::get_name()
+std::string button::get_name()
 {
-	return this->name;
+	return this->name_;
 }
 
-void Button::update()
+void button::update()
 {
-
 }
 
-void Button::render()
+
+void button::render() const
 {
-	this->m_window.draw(this->sprite);
+	this->m_window_.draw(this->sprite_);
 }

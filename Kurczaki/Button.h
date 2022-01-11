@@ -1,33 +1,30 @@
 #pragma once
 
 #include <string>
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 
-class Button
+class button
 {
 private:
-	sf::Vector2f position;
-	sf::Vector2f size;
+	sf::Vector2f position_;
+	sf::Vector2f size_;
 
-	sf::RenderWindow& m_window;
-	std::string name;
+	sf::RenderWindow& m_window_;
+	std::string name_;
 
-	sf::Sprite sprite;
-	sf::Texture btnTexture;
-	int texture;
+	sf::Sprite sprite_;
+	sf::Texture btn_texture_;
+	int texture_;
 
-	void initVariables();
-	void initShape();
+	static void init_variables();
+	void init_shape();
 
 public:
-	Button(sf::Vector2f newPosition, int newTexture, sf::Vector2f newSize, std::string newName, sf::RenderWindow& window);
+	button(sf::Vector2f new_position, int new_texture, sf::Vector2f new_size, std::string new_name,
+	       sf::RenderWindow& window);
 
-	sf::Vector2f get_position();
+	sf::Vector2f get_position() const;
 	std::string get_name();
-	void update();
-	void render();
+	static void update();
+	void render() const;
 };

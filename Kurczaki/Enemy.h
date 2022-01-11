@@ -1,37 +1,33 @@
 #pragma once
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 
-class Enemy
+class enemy
 {
 private:
-	sf::RenderWindow& m_window;
+	sf::RenderWindow& m_window_;
 
-	sf::Vector2f position;
-	sf::Texture texture;
-	sf::Sprite sprite;
+	sf::Vector2f position_;
+	sf::Texture texture_;
+	sf::Sprite sprite_;
 
-	int damage;
-	int hp;
-	int size;
-	int coins;
+	int damage_{};
+	int hp_{};
+	int size_{};
+	int coins_{};
 
-	void initVeriables();
-	void initShape();
+	void init_variables();
+	void init_shape();
 
 public:
-	Enemy(sf::Vector2f pos, sf::RenderWindow& window);
-	sf::Vector2f get_position();
-	int get_size();
-	int get_hp();
-	int get_coins();
-	void set_hp(int newHp);
+	enemy(sf::Vector2f pos, sf::RenderWindow& window);
+	sf::Vector2f get_position() const;
+	int get_size() const;
+	int get_hp() const;
+	int get_coins() const;
+	void set_hp(int new_hp);
 
-	bool del_obj();
-	void update();
+	static bool del_obj();
+	static void update();
 	void render();
 };

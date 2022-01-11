@@ -1,241 +1,276 @@
 #include "Game.h"
 
-void Game::initVeriables()
+void game::init_variables()
 {
-	this->backgroundTexture.loadFromFile("./assets/background.jpg");
-	this->backgroundTexture.setSmooth(true);
+	this->background_texture_.loadFromFile("./assets/background.jpg");
+	this->background_texture_.setSmooth(true);
 
-	this->backgroundSprite.setTexture(this->backgroundTexture);
-	this->backgroundSprite.setTextureRect(sf::IntRect(0, 0, 1280, 720));
+	this->background_sprite_.setTexture(this->background_texture_);
+	this->background_sprite_.setTextureRect(sf::IntRect(0, 0, 1280, 720));
 
-	this->currLvl = 1;
-	initTextScore();
+	this->current_lvl_ = 1;
+	init_text_score();
 }
 
-void Game::initTextScore()
+void game::init_text_score()
 {
-	this->font.loadFromFile("./assets/font.ttf");
-	this->textScore.setFont(this->font);
-	this->textScore.setString("Score: 0");
-	this->textScore.setCharacterSize(40);
-	this->textScore.setOrigin(-20, -10);
+	this->font_.loadFromFile("./assets/font.ttf");
+	this->text_score_.setFont(this->font_);
+	this->text_score_.setString("Score: 0");
+	this->text_score_.setCharacterSize(40);
+	this->text_score_.setOrigin(-20, -10);
 }
 
-void Game::updateLvl()
+void game::update_lvl()
 {
-	if (this->enemies.size() <= 0) {
-		this->currLvl++;
-		this->generateLvl(this->currLvl);
+	if (this->enemies_.empty())
+	{
+		this->current_lvl_++;
+		this->generate_lvl(this->current_lvl_);
 	}
 }
 
-Game::Game(sf::RenderWindow& window, WindowHendler& newWindowHandler)
-	:m_window(window), player(window), m_windowHandler(newWindowHandler)
+game::game(sf::RenderWindow& window, window_handler& new_window_handler)
+	: m_window_(window), m_window_handler_(new_window_handler), player_(window)
 {
-	this->initVeriables();
-	this->generateLvl(this->currLvl);
+	this->init_variables();
+	this->generate_lvl(this->current_lvl_);
 }
-void Game::generateLvl(int level)
+
+void game::generate_lvl(const int level)
 {
-	for (int i = 0; i < 12; i++) {
-		for (int j = 0; j < 4; j++) {
-			enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40 + 100.f * i, 60 + 100.f * j), m_window));
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			enemies_.emplace_back(std::make_unique<enemy>(sf::Vector2f(40 + 100.f * i, 60 + 100.f * j), m_window_));
 		}
 	}
 
-	for (auto& e : enemies) {
+	for (auto& e : enemies_)
+	{
 		e->set_hp(e->get_hp() * level);
 	}
 }
-void Game::updateEggs()
+
+void game::update_eggs()
 {
-	std::list<Egg>::iterator egg;
-	for (egg = eggs.begin(); egg != eggs.end(); ++egg) {
+	for (auto egg = eggs_.begin(); egg != eggs_.end(); ++egg)
+	{
 		egg->update();
-		if (egg->get_kabum()) {
-			this->eggs.erase(egg);
-		}
-		if ((this->hitbox(this->player.get_position(), egg->get_position(), this->player.get_size(), egg->get_size()))
-			&& !this->player.get_godMode())
+		if (egg->get_to_destruction())
 		{
-			this->player.set_hp(this->player.get_hp() - 1);
-			this->eggs.erase(egg);
+			this->eggs_.erase(egg);
+		}
+		if ((this->collider(this->player_.get_position(), egg->get_position(), this->player_.get_size(),
+		                    egg->get_size()))
+			&& !this->player_.get_god_mode())
+		{
+			this->player_.set_hp(this->player_.get_hp() - 1);
+			this->eggs_.erase(egg);
 		}
 	}
 }
-void Game::updateBullets()
+
+void game::update_bullets()
 {
-	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i]->update();
-		if (bullets[i]->get_kabum()) {
-			this->bullets.erase(this->bullets.begin() + i);
+	for (int i = 0; i < this->bullets_.size(); i++)
+	{
+		bullets_[i]->update();
+		if (bullets_[i]->get_to_destruction())
+		{
+			this->bullets_.erase(this->bullets_.begin() + i);
 		}
 	}
 }
-void Game::updateHitBoxBulletsEnemies()
+
+void game::update_hit_box_bullets_enemies()
 {
-	for (int j = 0; j < this->bullets.size(); j++) {
-		for (int i = 0; i < this->enemies.size(); i++) {
-			if (this->hitbox(bullets[j]->get_position(), this->enemies[i]->get_position(), bullets[j]->get_size(), this->enemies[i]->get_size())) {
-				this->enemies[i]->set_hp(this->enemies[i]->get_hp() - bullets[j]->get_damage());
-				this->bullets.erase(this->bullets.begin() + j);
+	for (int j = 0; j < this->bullets_.size(); j++)
+	{
+		for (const auto& enemy : this->enemies_)
+		{
+			if (this->collider(bullets_[j]->get_position(), enemy->get_position(), bullets_[j]->get_size(),
+			                   enemy->get_size()))
+			{
+				enemy->set_hp(enemy->get_hp() - bullets_[j]->get_damage());
+				this->bullets_.erase(this->bullets_.begin() + j);
 			}
 		}
 	}
 }
-void Game::updateShoot()
+
+void game::update_shoot()
 {
-	if (player.shoot()) {
-		bullets.emplace_back(std::make_unique<Bullet_v2>(m_window));
-		bullets[bullets.size() - 1]->initVeriables(sf::Vector2f(
-			this->player.get_position().x + this->player.get_size() / 2,
-			this->player.get_position().y));
+	if (player_.shoot())
+	{
+		bullets_.emplace_back(std::make_unique<bullet>(m_window_));
+		bullets_[bullets_.size() - 1]->init_variables(sf::Vector2f(
+			this->player_.get_position().x + this->player_.get_size() / 2,
+			this->player_.get_position().y));
 	}
 }
-void Game::updateEnemies()
+
+void game::update_enemies()
 {
-	for (int i = 0; i < this->enemies.size(); i++) {
-		enemies[i]->update();
-		if (rand() % (3000 / this->currLvl) == 500) {
-			this->eggs.push_back(Egg(m_window));
-			eggs.back().initVeriables(this->enemies[i]->get_position());
+	for (int i = 0; i < this->enemies_.size(); i++)
+	{
+		enemies_[i]->update();
+		if (rand() % (3000 / this->current_lvl_) == 500)
+		{
+			this->eggs_.emplace_back(m_window_);
+			eggs_.back().init_variables(this->enemies_[i]->get_position());
 		}
-		if (rand() % 5000 == 100) {
-			this->generatePowerUps(this->enemies[i]->get_position());
+		if (rand() % 5000 == 100)
+		{
+			this->generate_power_ups(this->enemies_[i]->get_position());
 		}
-		if (this->enemies[i]->get_hp() <= 0) {
-			this->enemies.erase(this->enemies.begin() + i);
-			this->player.set_points(this->player.get_points() + 5 * this->currLvl);
+		if (this->enemies_[i]->get_hp() <= 0)
+		{
+			this->enemies_.erase(this->enemies_.begin() + i);
+			this->player_.set_points(this->player_.get_points() + 5 * this->current_lvl_);
 		}
 	}
 }
-void Game::update()
+
+void game::update()
 {
-	this->m_windowHandler.set_score(this->player.get_points());
-	this->stateHandler();
-	this->updateShoot();
-	this->player.update();
-	this->updateText();
-	this->updateEnemies();
-	this->updateLvl();
-	this->updatePowerUps();
-	this->updateEggs();
-	this->updateBullets();
-	this->updateHitBoxBulletsEnemies();
+	this->m_window_handler_.set_score(this->player_.get_points());
+	this->state_handler();
+	this->update_shoot();
+	this->player_.update();
+	this->update_text();
+	this->update_enemies();
+	this->update_lvl();
+	this->update_power_ups();
+	this->update_eggs();
+	this->update_bullets();
+	this->update_hit_box_bullets_enemies();
 }
 
-void Game::render()
+void game::render()
 {
-	m_window.clear();
+	m_window_.clear();
 
-	this->renderBackground();
-	this->renderEnemies();
-	this->player.render();
-	this->renderScore();
-	this->renderPowerUps();
-	this->renderEggs();
-	this->renderBullets();
+	this->render_background();
+	this->render_enemies();
+	this->player_.render();
+	this->render_score();
+	this->render_power_ups();
+	this->render_eggs();
+	this->render_bullets();
 
-	m_window.display();
+	m_window_.display();
 }
 
-bool Game::hitbox(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2)
+bool game::collider(sf::Vector2f pos1, sf::Vector2f pos2, int size1, int size2)
 {
 	if (pos1.x < pos2.x + size2 &&
 		pos1.x + size1 > pos2.x &&
 		pos1.y < pos2.y + size2 &&
 		size1 + pos1.y > pos2.y
-		) {
+	)
+	{
 		return true;
 	}
 	return false;
 }
 
-void Game::generatePowerUps(sf::Vector2f pos)
+void game::generate_power_ups(sf::Vector2f pos)
 {
-	this->powerUps.push_back(PowerUp(m_window));
-	powerUps.back().initVeriables(pos);
+	this->power_ups_.emplace_back(m_window_);
+	power_ups_.back().init_variables(pos);
 }
 
-void Game::stateHandler()
+void game::state_handler()
 {
-	if (player.get_hp() <= 0) {
-		this->m_windowHandler.set_renderState(3);
+	if (player_.get_hp() <= 0)
+	{
+		this->m_window_handler_.set_render_state(3);
 	}
 }
 
-void Game::renderPowerUps()
+void game::render_power_ups()
 {
-	for (auto& p : this->powerUps) {
+	for (auto& p : this->power_ups_)
+	{
 		p.render();
 	}
 }
 
-void Game::renderEnemies()
+void game::render_enemies() const
 {
-	for (int i = 0; i < this->enemies.size(); i++) {
-		enemies[i]->render();
+	for (int i = 0; i < this->enemies_.size(); i++)
+	{
+		enemies_[i]->render();
 	}
 }
 
-void Game::renderBackground()
+void game::render_background() const
 {
-	m_window.draw(this->backgroundSprite);
+	m_window_.draw(this->background_sprite_);
 }
 
-void Game::renderScore()
+void game::render_score() const
 {
-	m_window.draw(this->textScore);
+	m_window_.draw(this->text_score_);
 }
 
-void Game::renderEggs()
+void game::render_eggs()
 {
-	for (auto& e : this->eggs) {
+	for (auto& e : this->eggs_)
+	{
 		e.render();
 	}
 }
 
-void Game::renderBullets()
+void game::render_bullets() const
 {
-	for (int i = 0; i < this->bullets.size(); i++) {
-		bullets[i]->render();
+	for (int i = 0; i < this->bullets_.size(); i++)
+	{
+		bullets_[i]->render();
 	}
 }
 
-void Game::updatePowerUps()
+void game::update_power_ups()
 {
-	std::list<PowerUp>::iterator buff;
-	for (buff = powerUps.begin(); buff != powerUps.end(); ++buff) {
+	for (auto buff = power_ups_.begin(); buff != power_ups_.end(); ++buff)
+	{
 		buff->update();
-		if (buff->get_kabum()) {
-			this->powerUps.erase(buff);
+		if (buff->get_to_destruction())
+		{
+			this->power_ups_.erase(buff);
 		}
-		if (this->hitbox(this->player.get_position(), buff->get_position(), this->player.get_size(), buff->get_size())) {
-			switch (buff->get_buff()) {
+		if (this->collider(this->player_.get_position(), buff->get_position(), this->player_.get_size(),
+		                   buff->get_size()))
+		{
+			switch (buff->get_buff())
+			{
 			case 0:
-				this->player.set_hp(this->player.get_hp() + 1);
+				this->player_.set_hp(this->player_.get_hp() + 1);
 				break;
 			case 1:
-				this->player.on_godMode();
+				this->player_.on_god_mode();
 				break;
 			case 2:
-				this->player.set_shootSpeed(this->player.get_shootSpeed() - 10);
+				this->player_.set_shoot_speed(this->player_.get_shoot_speed() - 10);
 				break;
 			case 3:
-				for (auto& a : this->eggs) {
+				for (auto& a : this->eggs_)
+				{
 					a.set_speed(a.get_speed() + 4);
 				}
 				break;
 			case 4:
-				this->player.set_speed(this->player.get_speed() + 1);
+				this->player_.set_speed(this->player_.get_speed() + 1);
 				break;
 			}
-			this->powerUps.erase(buff);
+			this->power_ups_.erase(buff);
 		}
 	}
 }
 
-void Game::updateText()
+void game::update_text()
 {
-	this->textScore.setString("Score: " + std::to_string(this->player.get_points()));
+	this->text_score_.setString("Score: " + std::to_string(this->player_.get_points()));
 }

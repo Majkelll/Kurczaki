@@ -1,200 +1,216 @@
 #include "Player.h"
 
-void Player::initVeriables()
+void player::init_variables()
 {
-	this->position.x = 1280 / 2 - 50;
-	this->position.y = 720 - 150;
-	this->hp = 1;
-	this->points = 0;
-	this->speed = 5.f;
-	this->size = 100;
-	this->shootSpeed = 25;
-	this->weaponLvl = 1;
-	this->speedLvl = 1;
-	this->shootLvl = 1;
+	this->position_.x = 1280 / 2 - 50;
+	this->position_.y = 720 - 150;
+	this->hp_ = 1;
+	this->points_ = 0;
+	this->speed_ = 5.f;
+	this->size_ = 100;
+	this->shoot_speed_ = 25;
+	this->weapon_lvl_ = 1;
+	this->speed_lvl_ = 1;
+	this->shoot_lvl_ = 1;
 
-	this->texture.loadFromFile("./assets/ship.png");
-	this->texture.setSmooth(true);
+	this->texture_.loadFromFile("./assets/ship.png");
+	this->texture_.setSmooth(true);
 
-	this->hpTexture.loadFromFile("./assets/heart.png");
-	this->hpTexture.setSmooth(true);
+	this->hp_texture_.loadFromFile("./assets/heart.png");
+	this->hp_texture_.setSmooth(true);
 
-	this->shieldTexture.loadFromFile("./assets/shield.png");
-	this->shieldTexture.setSmooth(true);
+	this->shield_texture_.loadFromFile("./assets/shield.png");
+	this->shield_texture_.setSmooth(true);
 }
 
-void Player::initShape()
+void player::init_shape()
 {
-	this->sprite.setTexture(this->texture);
-	this->sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+	this->sprite_.setTexture(this->texture_);
+	this->sprite_.setTextureRect(sf::IntRect(0, 0, 100, 100));
 
-	this->shieldSprite.setTexture(this->shieldTexture);
-	this->shieldSprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+	this->shield_sprite_.setTexture(this->shield_texture_);
+	this->shield_sprite_.setTextureRect(sf::IntRect(0, 0, 100, 100));
 }
 
-void Player::moveColider()
+void player::move_collider()
 {
-	if (this->position.x + this->size > m_window.getSize().x) {
-		this->position.x = m_window.getSize().x - this->size;
-		this->position.y = this->position.y;
+	if (this->position_.x + this->size_ > m_window_.getSize().x)
+	{
+		this->position_.x = m_window_.getSize().x - this->size_;
+		this->position_.y = this->position_.y;
 	}
-	if (this->position.x < 0) {
-		this->position.x = 0;
-		this->position.y = this->position.y;
+	if (this->position_.x < 0)
+	{
+		this->position_.x = 0;
+		this->position_.y = this->position_.y;
 	}
-	if (this->position.y < 0) {
-		this->position.x = this->position.x;
-		this->position.y = 0;
+	if (this->position_.y < 0)
+	{
+		this->position_.x = this->position_.x;
+		this->position_.y = 0;
 	}
-	if (this->position.y > 720 - this->size) {
-		this->position.x = this->position.x;
-		this->position.y = m_window.getSize().y - this->size;
+	if (this->position_.y > 720 - this->size_)
+	{
+		this->position_.x = this->position_.x;
+		this->position_.y = m_window_.getSize().y - this->size_;
 	}
 }
 
-void Player::move()
+void player::move()
 {
 	sf::Vector2f velocity(0.f, 0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		velocity.x -= this->speed;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		velocity.x -= this->speed_;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		velocity.x += this->speed;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		velocity.x += this->speed_;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		velocity.y += this->speed;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		velocity.y += this->speed_;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		velocity.y -= this->speed;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		velocity.y -= this->speed_;
 	}
-	this->position.x += velocity.x;
-	this->position.y += velocity.y;
+	this->position_.x += velocity.x;
+	this->position_.y += velocity.y;
 
-	this->moveColider();
+	this->move_collider();
 }
 
-void Player::hpRender()
+void player::hp_render() const
 {
-	for (int i = 0; i < this->hpSprites.size(); i++) {
-		m_window.draw(this->hpSprites[i]);
+	for (const auto& hp_sprite : this->hp_sprites_)
+	{
+		m_window_.draw(hp_sprite);
 	}
 }
 
-void Player::hpUpdate()
+void player::hp_update()
 {
-	if (this->hp != this->hpSprites.size()) {
-		hpSprites.clear();
-		for (int i = 0; i < this->hp; i++) {
+	if (this->hp_ != this->hp_sprites_.size())
+	{
+		hp_sprites_.clear();
+		for (int i = 0; i < this->hp_; i++)
+		{
 			sf::Sprite temp;
-			temp.setTexture(this->hpTexture);
+			temp.setTexture(this->hp_texture_);
 			temp.setTextureRect(sf::IntRect(0, 0, 40, 40));
-			temp.setPosition(sf::Vector2f(m_window.getSize().x - 60 - (i * 40), 20.f));
-			hpSprites.push_back(temp);
+			temp.setPosition(sf::Vector2f(m_window_.getSize().x - 60 - (i * 40), 20.f));
+			hp_sprites_.push_back(temp);
 		}
 	}
 }
 
-sf::Vector2f Player::get_position()
+sf::Vector2f player::get_position() const
 {
-	return this->position;
+	return this->position_;
 }
 
-int Player::get_size()
+int player::get_size() const
 {
-	return this->size;
+	return this->size_;
 }
 
-int Player::get_points()
+int player::get_points() const
 {
-	return this->points;
+	return this->points_;
 }
 
-void Player::on_godMode()
+void player::on_god_mode()
 {
-	this->godMode = true;
-	this->godModeTimer = 300;
+	this->god_mode_ = true;
+	this->god_mode_timer_ = 300;
 }
 
-void Player::set_points(int newPoints)
+void player::set_points(const int new_points)
 {
-	this->points = newPoints;
+	this->points_ = new_points;
 }
 
-void Player::set_hp(int newHp)
+void player::set_hp(const int new_hp)
 {
-	this->hp = newHp;
+	this->hp_ = new_hp;
 }
 
-void Player::set_shootSpeed(float newSpeed)
+void player::set_shoot_speed(const float new_speed)
 {
-	this->shootSpeed = newSpeed;
-	if (newSpeed < 0) {
-		this->shootSpeed = 0;
+	this->shoot_speed_ = new_speed;
+	if (new_speed < 0)
+	{
+		this->shoot_speed_ = 0;
 	}
 }
 
-void Player::set_speed(float newSpeed)
+void player::set_speed(const float new_speed)
 {
-	this->speed = newSpeed;
+	this->speed_ = new_speed;
 }
 
-int Player::get_hp()
+int player::get_hp() const
 {
-	return this->hp;
+	return this->hp_;
 }
 
-bool Player::get_godMode()
+bool player::get_god_mode() const
 {
-	return this->godMode;
+	return this->god_mode_;
 }
 
-float Player::get_shootSpeed()
+float player::get_shoot_speed() const
 {
-	return this->shootSpeed;
+	return this->shoot_speed_;
 }
 
-float Player::get_speed()
+float player::get_speed() const
 {
-	return this->speed;
+	return this->speed_;
 }
 
-bool Player::shoot()
+bool player::shoot()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->shootTimer < 0) {
-		this->shootTimer = this->shootSpeed;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->shoot_timer_ < 0)
+	{
+		this->shoot_timer_ = this->shoot_speed_;
 		return true;
 	}
-	this->shootTimer -= 1;
+	this->shoot_timer_ -= 1;
 	return false;
 }
 
-Player::Player(sf::RenderWindow& window)
-	:m_window(window)
+player::player(sf::RenderWindow& window)
+	: m_window_(window)
 {
-	this->initVeriables();
-	this->initShape();
+	this->init_variables();
+	this->init_shape();
 }
 
-void Player::update()
+void player::update()
 {
-	if (this->godModeTimer > 0 && this->godMode == true) {
-		this->godModeTimer--;
+	if (this->god_mode_timer_ > 0 && this->god_mode_ == true)
+	{
+		this->god_mode_timer_--;
 	}
-	else {
-		this->godMode = false;
+	else
+	{
+		this->god_mode_ = false;
 	}
 	this->move();
 	this->shoot();
-	this->hpUpdate();
-	this->shieldSprite.setPosition(this->position);
-	this->sprite.setPosition(this->position);
+	this->hp_update();
+	this->shield_sprite_.setPosition(this->position_);
+	this->sprite_.setPosition(this->position_);
 }
 
-void Player::render()
+void player::render() const
 {
-	m_window.draw(this->sprite);
-	if (this->godMode) {
-		m_window.draw(this->shieldSprite);
+	m_window_.draw(this->sprite_);
+	if (this->god_mode_)
+	{
+		m_window_.draw(this->shield_sprite_);
 	}
-	this->hpRender();
+	this->hp_render();
 }

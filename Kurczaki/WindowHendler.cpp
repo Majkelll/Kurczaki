@@ -1,46 +1,48 @@
 #include "WindowHendler.h"
 
-WindowHendler::WindowHendler(sf::RenderWindow& window)
-	:m_window(window)
+window_handler::window_handler(sf::RenderWindow& window)
+	: m_window_(window), render_state_(1)
 {
 	window.setFramerateLimit(60);
-	this->renderState = 1;
 }
 
-void WindowHendler::eventBasicHandler()
+void window_handler::event_basic_handler()
 {
-	sf::Event ev;
-	while (m_window.pollEvent(ev))
+	sf::Event ev{};
+	while (m_window_.pollEvent(ev))
 	{
-		switch (ev.type) {
+		switch (ev.type)
+		{
 		case sf::Event::Closed:
-			m_window.close();
+			m_window_.close();
 			break;
 		case sf::Event::KeyPressed:
-			if (ev.key.code == sf::Keyboard::Escape) {
-				this->set_renderState(1);
+			if (ev.key.code == sf::Keyboard::Escape)
+			{
+				this->set_render_state(1);
 			}
 			break;
+		default: ;
 		}
 	}
 }
 
-void WindowHendler::set_score(int newScore)
+void window_handler::set_score(const int new_score)
 {
-	this->score = newScore;
+	this->score_ = new_score;
 }
 
-void WindowHendler::set_renderState(int newRenderState)
+void window_handler::set_render_state(const int new_render_state)
 {
-	this->renderState = newRenderState;
+	this->render_state_ = new_render_state;
 }
 
-int WindowHendler::get_renderState()
+int window_handler::get_renderState() const
 {
-	return this->renderState;
+	return this->render_state_;
 }
 
-int WindowHendler::get_score()
+int window_handler::get_score() const
 {
-	return this->score;
+	return this->score_;
 }
